@@ -1,18 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Rubius Poke Catch</title>
 
+<!-- TMI.JS -->
 <script src="https://github.com/tmijs/tmi.js/releases/download/v1.8.5/tmi.min.js"></script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<!-- PIXEL FONT -->
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+>
 
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
     box-sizing:border-box;
@@ -29,17 +52,22 @@ body{
 }
 
 body{
-    font-family:"Press Start 2P",monospace;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
+
+    font-family:
+        "Press Start 2P",
+        monospace;
 }
 
-/* =====================================================
+
+/* =========================================================
    APP
-===================================================== */
+========================================================= */
 
 #app{
+
     position:relative;
 
     width:500px;
@@ -47,75 +75,88 @@ body{
 
     overflow:hidden;
 
-    background:#f7f7f5;
+    background:#f5f5f2;
 
-    color:#242424;
+    color:#222;
 
-    border:4px solid #242424;
+    border:4px solid #222;
+
 }
 
-/* =====================================================
+
+/* =========================================================
    HEADER
-===================================================== */
+========================================================= */
 
 .header{
-    height:74px;
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:82px;
 
     background:#ef5350;
 
-    border-bottom:4px solid #242424;
+    border-bottom:4px solid #222;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
-    position:relative;
 }
+
+
+/* LOGO */
 
 .logo{
-    text-align:center;
+
+    width:210px;
+    height:70px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
 }
 
-.logo-main{
-    color:white;
+.logo img{
 
-    font-size:22px;
+    width:195px;
+    max-height:68px;
 
-    line-height:1.35;
+    object-fit:contain;
 
-    text-shadow:
-        3px 3px 0 #242424;
+    image-rendering:auto;
+
 }
 
-.logo-sub{
-    color:#ffe66d;
 
-    font-size:11px;
-
-    margin-top:5px;
-
-    text-shadow:
-        2px 2px 0 #242424;
-}
-
-/* =====================================================
+/* =========================================================
    TWITCH STATUS
-===================================================== */
+========================================================= */
 
 .status{
+
     position:absolute;
 
-    top:87px;
+    top:92px;
     left:18px;
 
     font-size:8px;
 
-    color:#555;
+    color:#666;
 
     z-index:20;
+
 }
 
 .status::before{
+
     content:"";
 
     display:inline-block;
@@ -128,64 +169,109 @@ body{
     border-radius:50%;
 
     background:#aaa;
+
 }
 
 .status.connected{
+
     color:#333;
+
 }
 
 .status.connected::before{
+
     background:#42d77d;
+
 }
 
-/* =====================================================
-   MAIN POKEMON AREA
-===================================================== */
+
+/* =========================================================
+   POKEMON CARD
+========================================================= */
 
 .pokemon-card{
+
     position:absolute;
 
     left:15px;
     right:15px;
 
-    top:111px;
+    top:112px;
 
     height:360px;
 
-    background:white;
+    background-image:
+        url("./background.png");
 
-    border:4px solid #242424;
+    background-size:cover;
+
+    background-position:center;
+
+    border:4px solid #222;
 
     border-radius:8px;
 
     overflow:hidden;
+
 }
 
-/* =====================================================
-   TIMER
-===================================================== */
 
-.timer{
+/* =========================================================
+   BACKGROUND OVERLAY
+========================================================= */
+
+.pokemon-card::after{
+
+    content:"";
+
     position:absolute;
 
-    top:13px;
-    right:13px;
+    inset:0;
 
-    padding:8px 9px;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.02),
+            rgba(0,0,0,0.08)
+        );
 
-    background:#242424;
+    pointer-events:none;
+
+    z-index:0;
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.timer{
+
+    position:absolute;
+
+    top:12px;
+    right:12px;
+
+    padding:8px 10px;
+
+    background:#222;
 
     color:white;
 
     font-size:11px;
 
     z-index:10;
+
 }
 
 .timer.warning{
+
     background:#ef5350;
 
-    animation:timerBlink .5s steps(2) infinite;
+    animation:
+        timerBlink .5s steps(2) infinite;
+
 }
 
 @keyframes timerBlink{
@@ -200,17 +286,19 @@ body{
 
 }
 
-/* =====================================================
+
+/* =========================================================
    POKEMON STAGE
-===================================================== */
+========================================================= */
 
 .pokemon-stage{
+
     position:absolute;
 
     left:0;
     right:0;
 
-    top:15px;
+    top:18px;
 
     height:235px;
 
@@ -218,42 +306,64 @@ body{
 
     align-items:center;
     justify-content:center;
+
+    z-index:2;
+
 }
 
+
+/* SHADOW */
+
 .pokemon-stage::after{
+
     content:"";
 
     position:absolute;
 
-    bottom:5px;
+    bottom:7px;
 
-    width:190px;
-    height:24px;
+    width:185px;
+    height:23px;
 
-    background:#e5e5e5;
+    background:
+        rgba(0,0,0,.18);
 
     border-radius:50%;
 
+    filter:blur(3px);
+
     z-index:0;
+
 }
 
+
+/* SPRITE */
+
 #pokemonSprite{
+
     position:relative;
 
-    width:215px;
-    height:215px;
+    width:220px;
+    height:220px;
 
     object-fit:contain;
 
-    z-index:1;
+    z-index:2;
 
     transition:
         transform .2s ease,
         opacity .2s ease;
+
 }
 
+
+/* HIT */
+
 #pokemonSprite.hit{
-    animation:hit .25s steps(4);
+
+    animation:
+        hit .25s steps(4);
+
 }
 
 @keyframes hit{
@@ -280,47 +390,75 @@ body{
 
 }
 
+
+/* CAPTURED */
+
 #pokemonSprite.captured{
-    animation:captured .7s steps(5) forwards;
+
+    animation:
+        captured .7s steps(5) forwards;
+
 }
 
 @keyframes captured{
 
     0%{
+
         transform:scale(1);
+
         opacity:1;
+
     }
 
     100%{
+
         transform:scale(.15);
+
         opacity:0;
+
     }
 
 }
 
+
+/* ESCAPE */
+
 #pokemonSprite.escape{
-    animation:escape .7s steps(5) forwards;
+
+    animation:
+        escape .7s steps(5) forwards;
+
 }
 
 @keyframes escape{
 
     0%{
-        transform:translateY(0);
+
+        transform:
+            translateY(0);
+
         opacity:1;
+
     }
 
     100%{
-        transform:translateY(-100px);
+
+        transform:
+            translateY(-100px);
+
         opacity:0;
+
     }
 
 }
 
-/* =====================================================
+
+/* =========================================================
    POKEMON NAME
-===================================================== */
+========================================================= */
 
 .pokemon-name{
+
     position:absolute;
 
     left:20px;
@@ -332,25 +470,38 @@ body{
 
     font-size:17px;
 
-    color:#242424;
+    color:white;
+
+    text-shadow:
+        2px 2px 0 #222,
+        -1px -1px 0 #222;
 
     text-transform:uppercase;
+
+    z-index:5;
+
 }
 
-/* =====================================================
+
+/* =========================================================
    HP
-===================================================== */
+========================================================= */
 
 .hp-area{
+
     position:absolute;
 
     left:25px;
     right:25px;
 
-    bottom:18px;
+    bottom:17px;
+
+    z-index:5;
+
 }
 
 .hp-top{
+
     display:flex;
 
     justify-content:space-between;
@@ -358,30 +509,47 @@ body{
     align-items:center;
 
     margin-bottom:7px;
+
 }
 
 .hp-label{
+
     font-size:9px;
+
+    color:white;
+
+    text-shadow:
+        2px 2px 0 #222;
+
 }
 
 .hp-text{
+
     font-size:8px;
 
-    color:#666;
+    color:white;
+
+    text-shadow:
+        2px 2px 0 #222;
+
 }
 
 .hp-bar{
+
     width:100%;
 
     height:17px;
 
-    background:#e2e2e2;
+    background:#ddd;
 
-    border:3px solid #242424;
+    border:3px solid #222;
+
 }
 
 .hp-fill{
+
     width:100%;
+
     height:100%;
 
     background:#55cf72;
@@ -389,32 +557,40 @@ body{
     transition:
         width .25s ease,
         background .25s ease;
+
 }
 
-/* =====================================================
-   CAPTURE
-===================================================== */
+
+/* =========================================================
+   CAPTURE PANEL
+========================================================= */
 
 .capture-panel{
+
     position:absolute;
 
     left:15px;
     right:15px;
 
-    top:484px;
+    top:485px;
 
     height:94px;
 
     background:white;
 
-    border:4px solid #242424;
+    border:4px solid #222;
 
     border-radius:8px;
 
     padding:13px 16px;
+
 }
 
+
+/* HEADER */
+
 .capture-top{
+
     display:flex;
 
     justify-content:space-between;
@@ -422,39 +598,56 @@ body{
     align-items:center;
 
     margin-bottom:9px;
+
 }
 
 .capture-title{
+
     font-size:9px;
+
 }
 
 .capture-percent{
+
     font-size:15px;
 
     color:#ef5350;
+
 }
 
+
+/* BAR */
+
 .capture-bar{
+
     width:100%;
 
     height:15px;
 
     background:#e6e6e6;
 
-    border:3px solid #242424;
+    border:3px solid #222;
+
 }
 
 .capture-fill{
+
     width:0%;
+
     height:100%;
 
     background:#55cf72;
 
     transition:
         width .25s ease;
+
 }
 
+
+/* INFO */
+
 .capture-info{
+
     display:flex;
 
     justify-content:space-between;
@@ -464,19 +657,22 @@ body{
     font-size:7px;
 
     color:#777;
+
 }
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+
+/* =========================================================
+   COMMAND BUTTONS
+========================================================= */
 
 .commands{
+
     position:absolute;
 
     left:15px;
     right:15px;
 
-    top:591px;
+    top:592px;
 
     height:57px;
 
@@ -486,14 +682,19 @@ body{
         1fr 1fr 1fr;
 
     gap:8px;
+
 }
 
+
 .command{
-    border:4px solid #242424;
+
+    border:4px solid #222;
 
     border-radius:7px;
 
-    font-family:"Press Start 2P",monospace;
+    font-family:
+        "Press Start 2P",
+        monospace;
 
     font-size:9px;
 
@@ -504,67 +705,99 @@ body{
     transition:
         transform .1s,
         filter .1s;
+
 }
+
+
+/* FIGHT */
 
 .command.fight{
+
     background:#ef5350;
+
 }
+
+
+/* CATCH */
 
 .command.catch{
+
     background:#3f8ee8;
+
 }
+
+
+/* ITEM */
 
 .command.item{
+
     background:#f2bd3d;
-    color:#242424;
+
+    color:#222;
+
 }
+
+
+/* ACTIVE */
 
 .command.active{
-    transform:translateY(3px);
 
-    filter:brightness(1.2);
+    transform:
+        translateY(3px);
+
+    filter:
+        brightness(1.2);
+
 }
 
-/* =====================================================
+
+/* =========================================================
    BOTTOM
-===================================================== */
+========================================================= */
 
 .bottom{
+
     position:absolute;
 
     left:15px;
     right:15px;
 
-    top:663px;
+    top:664px;
 
     height:120px;
 
     display:grid;
 
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
     gap:8px;
+
 }
 
-/* =====================================================
+
+/* =========================================================
    PANELS
-===================================================== */
+========================================================= */
 
 .chat-panel,
 .ranking-panel{
+
     background:white;
 
-    border:4px solid #242424;
+    border:4px solid #222;
 
     border-radius:8px;
 
     overflow:hidden;
+
 }
 
 .panel-title{
+
     height:27px;
 
-    background:#242424;
+    background:#222;
 
     color:white;
 
@@ -575,13 +808,22 @@ body{
     padding-left:9px;
 
     font-size:7px;
+
 }
 
+
+/* =========================================================
+   CHAT
+========================================================= */
+
 .chat-list{
+
     padding:7px 8px;
+
 }
 
 .chat-message{
+
     font-size:6px;
 
     white-space:nowrap;
@@ -591,28 +833,38 @@ body{
     text-overflow:ellipsis;
 
     margin-bottom:7px;
+
 }
 
 .chat-user{
+
     color:#ef5350;
+
 }
 
 .chat-command{
+
     color:#333;
+
 }
 
-/* =====================================================
+
+/* =========================================================
    RANKING
-===================================================== */
+========================================================= */
 
 .ranking-list{
+
     padding:5px 8px;
+
 }
 
 .rank-row{
+
     display:grid;
 
-    grid-template-columns:20px 1fr 25px;
+    grid-template-columns:
+        20px 1fr 25px;
 
     align-items:center;
 
@@ -620,29 +872,37 @@ body{
 
     font-size:6px;
 
-    border-bottom:1px solid #eee;
+    border-bottom:
+        1px solid #eee;
+
 }
 
 .rank-number{
+
     color:#ef5350;
+
 }
 
 .rank-count{
+
     text-align:right;
 
     color:#555;
+
 }
 
-/* =====================================================
+
+/* =========================================================
    MESSAGE
-===================================================== */
+========================================================= */
 
 .message{
+
     position:absolute;
 
     left:50%;
 
-    top:330px;
+    top:335px;
 
     transform:
         translate(-50%,10px);
@@ -651,7 +911,7 @@ body{
 
     padding:10px;
 
-    background:#242424;
+    background:#222;
 
     color:white;
 
@@ -672,36 +932,41 @@ body{
     transition:
         opacity .15s,
         transform .15s;
+
 }
 
 .message.show{
+
     opacity:1;
 
     transform:
         translate(-50%,0);
+
 }
 
-/* =====================================================
+
+/* =========================================================
    POKEBALL
-===================================================== */
+========================================================= */
 
 .pokeball{
+
     position:absolute;
 
     left:50%;
-    top:270px;
+    top:275px;
 
     width:54px;
     height:54px;
 
     border-radius:50%;
 
-    border:4px solid #242424;
+    border:4px solid #222;
 
     background:
         linear-gradient(
             #ef5350 0 46%,
-            #242424 46% 54%,
+            #222 46% 54%,
             white 54% 100%
         );
 
@@ -710,9 +975,11 @@ body{
         scale(0);
 
     z-index:60;
+
 }
 
 .pokeball::after{
+
     content:"";
 
     position:absolute;
@@ -730,37 +997,46 @@ body{
 
     background:white;
 
-    border:3px solid #242424;
+    border:3px solid #222;
+
 }
 
 .pokeball.throw{
+
     animation:
         ballThrow .8s steps(5) forwards;
+
 }
 
 @keyframes ballThrow{
 
     0%{
+
         transform:
             translate(-50%,80px)
             scale(.4)
             rotate(0deg);
+
     }
 
     100%{
+
         transform:
             translate(-50%,-10px)
             scale(1)
             rotate(360deg);
+
     }
 
 }
 
-/* =====================================================
+
+/* =========================================================
    FLASH
-===================================================== */
+========================================================= */
 
 .capture-flash{
+
     position:absolute;
 
     inset:0;
@@ -772,11 +1048,14 @@ body{
     pointer-events:none;
 
     z-index:100;
+
 }
 
 .capture-flash.active{
+
     animation:
         flash .35s steps(3);
+
 }
 
 @keyframes flash{
@@ -795,11 +1074,13 @@ body{
 
 }
 
-/* =====================================================
+
+/* =========================================================
    ITEM EFFECT
-===================================================== */
+========================================================= */
 
 .item-effect{
+
     position:absolute;
 
     left:50%;
@@ -816,58 +1097,81 @@ body{
     z-index:55;
 
     pointer-events:none;
+
 }
 
 .item-effect.active{
+
     animation:
         itemPop .7s steps(4);
+
 }
 
 @keyframes itemPop{
 
     0%{
+
         transform:
             translate(-50%,-50%)
             scale(0);
 
         opacity:0;
+
     }
 
     35%{
+
         transform:
             translate(-50%,-50%)
             scale(1);
 
         opacity:1;
+
     }
 
     100%{
+
         transform:
             translate(-50%,-90%)
             scale(1);
 
         opacity:0;
+
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
+
 <div id="app">
 
-    <!-- HEADER -->
 
-  <div class="logo">
-    <img
-        src="./Rubius-Catch.png"
-        alt="Rubius Poke Catch"
-    >
-</div>
+    <!-- =================================================
+         HEADER
+    ================================================== -->
 
-    <!-- TWITCH -->
+    <div class="header">
+
+        <div class="logo">
+
+            <img
+                src="./Rubius-Catch.png"
+                alt="Rubius Poke Catch"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TWITCH STATUS
+    ================================================== -->
 
     <div
         id="connectionStatus"
@@ -876,12 +1180,18 @@ body{
         CONECTANDO TWITCH...
     </div>
 
-    <!-- POKEMON -->
+
+    <!-- =================================================
+         POKEMON
+    ================================================== -->
 
     <div
         id="pokemonCard"
         class="pokemon-card"
     >
+
+
+        <!-- TIMER -->
 
         <div
             id="timer"
@@ -889,6 +1199,9 @@ body{
         >
             20.0s
         </div>
+
+
+        <!-- POKEMON -->
 
         <div class="pokemon-stage">
 
@@ -900,12 +1213,18 @@ body{
 
         </div>
 
+
+        <!-- NAME -->
+
         <div
             id="pokemonName"
             class="pokemon-name"
         >
             CARGANDO...
         </div>
+
+
+        <!-- HP -->
 
         <div class="hp-area">
 
@@ -924,6 +1243,7 @@ body{
 
             </div>
 
+
             <div class="hp-bar">
 
                 <div
@@ -937,9 +1257,13 @@ body{
 
     </div>
 
-    <!-- CAPTURE -->
+
+    <!-- =================================================
+         CAPTURE
+    ================================================== -->
 
     <div class="capture-panel">
+
 
         <div class="capture-top">
 
@@ -956,6 +1280,7 @@ body{
 
         </div>
 
+
         <div class="capture-bar">
 
             <div
@@ -965,27 +1290,41 @@ body{
 
         </div>
 
+
         <div class="capture-info">
 
             <span>
-                BASE <b id="baseChance">15%</b>
+                BASE
+                <b id="baseChance">
+                    15%
+                </b>
             </span>
 
             <span>
-                DAMAGE <b id="damageBonus">+0%</b>
+                DAMAGE
+                <b id="damageBonus">
+                    +0%
+                </b>
             </span>
 
             <span>
-                ITEM <b id="itemBonus">+0%</b>
+                ITEM
+                <b id="itemBonus">
+                    +0%
+                </b>
             </span>
 
         </div>
 
     </div>
 
-    <!-- COMMANDS -->
+
+    <!-- =================================================
+         COMMANDS
+    ================================================== -->
 
     <div class="commands">
+
 
         <button
             id="fightButton"
@@ -994,12 +1333,14 @@ body{
             FIGHT
         </button>
 
+
         <button
             id="catchButton"
             class="command catch"
         >
             CATCH
         </button>
+
 
         <button
             id="itemButton"
@@ -1008,11 +1349,18 @@ body{
             ITEM
         </button>
 
+
     </div>
 
-    <!-- BOTTOM -->
+
+    <!-- =================================================
+         CHAT + RANKING
+    ================================================== -->
 
     <div class="bottom">
+
+
+        <!-- CHAT -->
 
         <div class="chat-panel">
 
@@ -1027,6 +1375,9 @@ body{
 
         </div>
 
+
+        <!-- RANKING -->
+
         <div class="ranking-panel">
 
             <div class="panel-title">
@@ -1040,30 +1391,43 @@ body{
 
         </div>
 
+
     </div>
 
-    <!-- MESSAGE -->
+
+    <!-- =================================================
+         MESSAGE
+    ================================================== -->
 
     <div
         id="message"
         class="message"
     ></div>
 
-    <!-- FLASH -->
+
+    <!-- =================================================
+         FLASH
+    ================================================== -->
 
     <div
         id="captureFlash"
         class="capture-flash"
     ></div>
 
-    <!-- BALL -->
+
+    <!-- =================================================
+         POKEBALL
+    ================================================== -->
 
     <div
         id="pokeball"
         class="pokeball"
     ></div>
 
-    <!-- ITEM -->
+
+    <!-- =================================================
+         ITEM
+    ================================================== -->
 
     <div
         id="itemEffect"
@@ -1072,170 +1436,233 @@ body{
         +CAPTURE
     </div>
 
+
 </div>
+
 
 <script>
 
-/* =====================================================
-   CONFIG
-===================================================== */
+/* =========================================================
+   CONFIGURATION
+========================================================= */
 
 const params =
     new URLSearchParams(
         window.location.search
     );
 
+
 const CHANNEL =
     (
         params.get("channel")
-        || "rubius"
+        ||
+        "rubius"
     )
     .toLowerCase()
     .trim();
 
-const POKEMON_MAX = 1025;
 
-const ROUND_TIME = 20;
+const POKEMON_MAX =
+    1025;
 
-const FIGHT_DAMAGE_MIN = 8;
 
-const FIGHT_DAMAGE_MAX = 17;
+const ROUND_TIME =
+    20;
+
+
+const FIGHT_DAMAGE_MIN =
+    8;
+
+
+const FIGHT_DAMAGE_MAX =
+    17;
+
 
 const POKEAPI =
     "https://pokeapi.co/api/v2/pokemon/";
 
-/* =====================================================
-   STATE
-===================================================== */
 
-let currentPokemon = null;
+/* =========================================================
+   GAME STATE
+========================================================= */
 
-let currentHP = 100;
+let currentPokemon =
+    null;
 
-let currentMaxHP = 100;
 
-let timeLeft = ROUND_TIME;
+let currentHP =
+    100;
 
-let timerInterval = null;
 
-let roundActive = false;
+let currentMaxHP =
+    100;
 
-let itemBonus = 0;
 
-let itemUsed = false;
+let timeLeft =
+    ROUND_TIME;
 
-let processingCatch = false;
 
-let captures = {};
+let timerInterval =
+    null;
 
-let recentPokemon = [];
 
-/* =====================================================
+let roundActive =
+    false;
+
+
+let itemBonus =
+    0;
+
+
+let itemUsed =
+    false;
+
+
+let processingCatch =
+    false;
+
+
+let captures =
+    {};
+
+
+let recentPokemon =
+    [];
+
+
+/* =========================================================
    ELEMENTS
-===================================================== */
+========================================================= */
 
 const connectionStatus =
     document.getElementById(
         "connectionStatus"
     );
 
+
 const pokemonCard =
     document.getElementById(
         "pokemonCard"
     );
+
 
 const pokemonSprite =
     document.getElementById(
         "pokemonSprite"
     );
 
+
 const pokemonName =
     document.getElementById(
         "pokemonName"
     );
+
 
 const hpFill =
     document.getElementById(
         "hpFill"
     );
 
+
 const hpText =
     document.getElementById(
         "hpText"
     );
+
 
 const timer =
     document.getElementById(
         "timer"
     );
 
+
 const capturePercent =
     document.getElementById(
         "capturePercent"
     );
+
 
 const captureFill =
     document.getElementById(
         "captureFill"
     );
 
+
 const baseChance =
     document.getElementById(
         "baseChance"
     );
+
 
 const damageBonus =
     document.getElementById(
         "damageBonus"
     );
 
+
 const itemBonusElement =
     document.getElementById(
         "itemBonus"
     );
+
 
 const chatList =
     document.getElementById(
         "chatList"
     );
 
+
 const rankingList =
     document.getElementById(
         "rankingList"
     );
+
 
 const message =
     document.getElementById(
         "message"
     );
 
+
 const captureFlash =
     document.getElementById(
         "captureFlash"
     );
+
 
 const pokeball =
     document.getElementById(
         "pokeball"
     );
 
+
 const itemEffect =
     document.getElementById(
         "itemEffect"
     );
 
-/* =====================================================
-   UTILITIES
-===================================================== */
 
-function randomInt(min,max){
+/* =========================================================
+   RANDOM
+========================================================= */
+
+function randomInt(
+    min,
+    max
+){
 
     return Math.floor(
-        Math.random() *
-        (max - min + 1)
-    ) + min;
+        Math.random()
+        *
+        (
+            max - min + 1
+        )
+    )
+    +
+    min;
 
 }
+
 
 function randomPokemonId(){
 
@@ -1249,83 +1676,119 @@ function randomPokemonId(){
                 POKEMON_MAX
             );
 
-    }while(
+    }
+    while(
         recentPokemon.includes(id)
         &&
         recentPokemon.length <
         POKEMON_MAX
     );
 
-    recentPokemon.push(id);
+
+    recentPokemon.push(
+        id
+    );
+
 
     if(
-        recentPokemon.length > 20
+        recentPokemon.length >
+        20
     ){
 
         recentPokemon.shift();
 
     }
 
+
     return id;
+
 }
 
-function capitalize(text){
 
-    if(!text){
+/* =========================================================
+   TEXT
+========================================================= */
+
+function capitalize(
+    text
+){
+
+    if(
+        !text
+    ){
+
         return "";
+
     }
 
-    return text
-        .charAt(0)
+
+    return (
+        text.charAt(0)
         .toUpperCase()
         +
-        text.slice(1);
+        text.slice(1)
+    );
 
 }
 
-function formatPokemonName(name){
+
+function formatPokemonName(
+    name
+){
 
     return name
         .split("-")
-        .map(capitalize)
+        .map(
+            capitalize
+        )
         .join(" ");
 
 }
 
-/* =====================================================
+
+/* =========================================================
    MESSAGE
-===================================================== */
+========================================================= */
 
 let messageTimeout;
 
-function showMessage(text){
+
+function showMessage(
+    text
+){
 
     message.textContent =
         text;
+
 
     message.classList.add(
         "show"
     );
 
+
     clearTimeout(
         messageTimeout
     );
 
+
     messageTimeout =
         setTimeout(
             ()=>{
+
                 message.classList.remove(
                     "show"
                 );
+
             },
             2200
         );
 
 }
 
-/* =====================================================
+
+/* =========================================================
    CHAT
-===================================================== */
+========================================================= */
 
 function addChat(
     username,
@@ -1337,27 +1800,35 @@ function addChat(
             "div"
         );
 
+
     row.className =
         "chat-message";
+
 
     const user =
         document.createElement(
             "span"
         );
 
+
     user.className =
         "chat-user";
 
+
     user.textContent =
         username + ":";
+
 
     const msg =
         document.createElement(
             "span"
         );
 
+
     if(
-        text.trim().startsWith("!")
+        text
+            .trim()
+            .startsWith("!")
     ){
 
         msg.className =
@@ -1365,17 +1836,29 @@ function addChat(
 
     }
 
+
     msg.textContent =
         " " + text;
 
-    row.appendChild(user);
 
-    row.appendChild(msg);
+    row.appendChild(
+        user
+    );
 
-    chatList.prepend(row);
+
+    row.appendChild(
+        msg
+    );
+
+
+    chatList.prepend(
+        row
+    );
+
 
     while(
-        chatList.children.length > 6
+        chatList.children.length >
+        6
     ){
 
         chatList.removeChild(
@@ -1386,25 +1869,32 @@ function addChat(
 
 }
 
-/* =====================================================
-   RANKING
-===================================================== */
 
-function addCapture(username){
+/* =========================================================
+   RANKING
+========================================================= */
+
+function addCapture(
+    username
+){
 
     if(
         !captures[username]
     ){
 
-        captures[username] = 0;
+        captures[username] =
+            0;
 
     }
 
+
     captures[username]++;
+
 
     updateRanking();
 
 }
+
 
 function updateRanking(){
 
@@ -1413,24 +1903,32 @@ function updateRanking(){
             captures
         )
         .sort(
-            (a,b)=>b[1]-a[1]
+            (a,b)=>
+                b[1] - a[1]
         )
-        .slice(0,6);
+        .slice(
+            0,
+            6
+        );
+
 
     rankingList.innerHTML =
         "";
+
 
     if(
         entries.length === 0
     ){
 
         rankingList.innerHTML = `
-            <div style="
-                padding:8px;
-                font-size:6px;
-                line-height:1.8;
-                color:#777;
-            ">
+            <div
+                style="
+                    padding:8px;
+                    font-size:6px;
+                    line-height:1.8;
+                    color:#777;
+                "
+            >
                 NO CAPTURES YET
             </div>
         `;
@@ -1439,30 +1937,45 @@ function updateRanking(){
 
     }
 
+
     entries.forEach(
-        ([username,count],index)=>{
+        (
+            [username,count],
+            index
+        )=>{
 
             const row =
                 document.createElement(
                     "div"
                 );
 
+
             row.className =
                 "rank-row";
 
+
             row.innerHTML = `
-                <span class="rank-number">
+
+                <span
+                    class="rank-number"
+                >
                     ${index + 1}
                 </span>
 
                 <span>
-                    ${escapeHTML(username)}
+                    ${escapeHTML(
+                        username
+                    )}
                 </span>
 
-                <span class="rank-count">
+                <span
+                    class="rank-count"
+                >
                     ${count}
                 </span>
+
             `;
+
 
             rankingList.appendChild(
                 row
@@ -1473,25 +1986,33 @@ function updateRanking(){
 
 }
 
-function escapeHTML(text){
+
+function escapeHTML(
+    text
+){
 
     return String(text)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
@@ -1499,9 +2020,10 @@ function escapeHTML(text){
 
 }
 
-/* =====================================================
+
+/* =========================================================
    NEW POKEMON
-===================================================== */
+========================================================= */
 
 async function newPokemon(){
 
@@ -1509,32 +2031,42 @@ async function newPokemon(){
         timerInterval
     );
 
+
     roundActive =
         false;
+
 
     processingCatch =
         false;
 
+
     itemBonus =
         0;
+
 
     itemUsed =
         false;
 
+
     timeLeft =
         ROUND_TIME;
+
 
     pokemonSprite.className =
         "";
 
+
     const id =
         randomPokemonId();
 
+
     pokemonName.textContent =
-        "LOADING...";
+        "CARGANDO...";
+
 
     pokemonSprite.src =
         "";
+
 
     try{
 
@@ -1543,54 +2075,75 @@ async function newPokemon(){
                 POKEAPI + id
             );
 
+
         const data =
             await response.json();
+
 
         currentPokemon =
             data;
 
+
         currentMaxHP =
             100;
 
+
         currentHP =
             100;
+
 
         pokemonName.textContent =
             formatPokemonName(
                 data.name
             );
 
+
         pokemonSprite.src =
-            data.sprites.other
+            data
+                .sprites
+                .other
                 ?.["official-artwork"]
                 ?.front_default
             ||
-            data.sprites.front_default
+            data
+                .sprites
+                .front_default
             ||
             "";
 
+
         updateHP();
 
+
         updateCapture();
+
 
         roundActive =
             true;
 
+
         startTimer();
 
+
         showMessage(
-            `WILD ${formatPokemonName(data.name)} APPEARED!`
+            `WILD ${formatPokemonName(
+                data.name
+            )} APPEARED!`
         );
 
-    }catch(error){
+
+    }
+    catch(error){
 
         console.error(
             "Pokemon error:",
             error
         );
 
+
         pokemonName.textContent =
             "ERROR";
+
 
         setTimeout(
             newPokemon,
@@ -1601,25 +2154,33 @@ async function newPokemon(){
 
 }
 
-/* =====================================================
+
+/* =========================================================
    HP
-===================================================== */
+========================================================= */
 
 function updateHP(){
 
     const percentage =
         Math.max(
             0,
-            currentHP /
-            currentMaxHP *
+            currentHP
+            /
+            currentMaxHP
+            *
             100
         );
+
 
     hpFill.style.width =
         percentage + "%";
 
+
     hpText.textContent =
-        `${Math.round(currentHP)} / ${currentMaxHP}`;
+        `${Math.round(
+            currentHP
+        )} / ${currentMaxHP}`;
+
 
     if(
         percentage > 55
@@ -1628,57 +2189,65 @@ function updateHP(){
         hpFill.style.background =
             "#55cf72";
 
-    }else if(
+    }
+    else if(
         percentage > 25
     ){
 
         hpFill.style.background =
             "#f2bd3d";
 
-    }else{
+    }
+    else{
 
         hpFill.style.background =
             "#ef5350";
 
     }
 
+
     updateCapture();
 
 }
 
-/* =====================================================
+
+/* =========================================================
    CAPTURE CHANCE
-===================================================== */
+========================================================= */
 
 function getBaseChance(){
-
-    if(
-        !currentPokemon
-    ){
-
-        return 15;
-
-    }
 
     return 15;
 
 }
+
 
 function getCaptureChance(){
 
     const base =
         getBaseChance();
 
+
     const damage =
         (
-            (100 - currentHP)
-            / 100
-        ) * 65;
+            (
+                100 -
+                currentHP
+            )
+            /
+            100
+        )
+        *
+        65;
+
 
     const chance =
-        base +
-        damage +
+        base
+        +
+        damage
+        +
         itemBonus;
+
 
     return Math.min(
         95,
@@ -1690,42 +2259,63 @@ function getCaptureChance(){
 
 }
 
+
 function updateCapture(){
 
     const base =
         getBaseChance();
 
+
     const damage =
         (
-            (100 - currentHP)
-            / 100
-        ) * 65;
+            (
+                100 -
+                currentHP
+            )
+            /
+            100
+        )
+        *
+        65;
+
 
     const chance =
         getCaptureChance();
 
+
     capturePercent.textContent =
-        `${Math.round(chance)}%`;
+        `${Math.round(
+            chance
+        )}%`;
+
 
     captureFill.style.width =
         chance + "%";
 
+
     baseChance.textContent =
         `${base}%`;
 
+
     damageBonus.textContent =
-        `+${Math.round(damage)}%`;
+        `+${Math.round(
+            damage
+        )}%`;
+
 
     itemBonusElement.textContent =
         `+${itemBonus}%`;
 
 }
 
-/* =====================================================
-   FIGHT
-===================================================== */
 
-function fight(username){
+/* =========================================================
+   FIGHT
+========================================================= */
+
+function fight(
+    username
+){
 
     if(
         !roundActive
@@ -1735,9 +2325,11 @@ function fight(username){
 
     }
 
+
     highlight(
         "fightButton"
     );
+
 
     const damage =
         randomInt(
@@ -1745,27 +2337,35 @@ function fight(username){
             FIGHT_DAMAGE_MAX
         );
 
+
     currentHP =
         Math.max(
             0,
-            currentHP - damage
+            currentHP -
+            damage
         );
+
 
     pokemonSprite.classList.remove(
         "hit"
     );
 
+
     void pokemonSprite.offsetWidth;
+
 
     pokemonSprite.classList.add(
         "hit"
     );
 
+
     updateHP();
+
 
     showMessage(
         `${username} DEALT ${damage} DAMAGE`
     );
+
 
     if(
         currentHP <= 0
@@ -1774,17 +2374,21 @@ function fight(username){
         currentHP =
             1;
 
+
         updateHP();
 
     }
 
 }
 
-/* =====================================================
-   ITEM
-===================================================== */
 
-function useItem(username){
+/* =========================================================
+   ITEM
+========================================================= */
+
+function useItem(
+    username
+){
 
     if(
         !roundActive
@@ -1793,6 +2397,7 @@ function useItem(username){
         return;
 
     }
+
 
     if(
         itemUsed
@@ -1806,27 +2411,35 @@ function useItem(username){
 
     }
 
+
     itemUsed =
         true;
 
+
     itemBonus =
         20;
+
 
     highlight(
         "itemButton"
     );
 
+
     itemEffect.classList.remove(
         "active"
     );
 
+
     void itemEffect.offsetWidth;
+
 
     itemEffect.classList.add(
         "active"
     );
 
+
     updateCapture();
+
 
     showMessage(
         `${username} USED AN ITEM`
@@ -1834,11 +2447,14 @@ function useItem(username){
 
 }
 
-/* =====================================================
-   CATCH
-===================================================== */
 
-function catchPokemon(username){
+/* =========================================================
+   CATCH
+========================================================= */
+
+function catchPokemon(
+    username
+){
 
     if(
         !roundActive
@@ -1850,27 +2466,36 @@ function catchPokemon(username){
 
     }
 
+
     processingCatch =
         true;
+
 
     highlight(
         "catchButton"
     );
 
+
     const chance =
         getCaptureChance();
 
+
     const roll =
-        Math.random() * 100;
+        Math.random() *
+        100;
+
 
     roundActive =
         false;
+
 
     clearInterval(
         timerInterval
     );
 
+
     playCaptureAnimation();
+
 
     setTimeout(
         ()=>{
@@ -1883,7 +2508,8 @@ function catchPokemon(username){
                     username
                 );
 
-            }else{
+            }
+            else{
 
                 failedCapture(
                     username
@@ -1897,9 +2523,10 @@ function catchPokemon(username){
 
 }
 
-/* =====================================================
+
+/* =========================================================
    CAPTURE ANIMATION
-===================================================== */
+========================================================= */
 
 function playCaptureAnimation(){
 
@@ -1907,21 +2534,27 @@ function playCaptureAnimation(){
         "active"
     );
 
+
     void captureFlash.offsetWidth;
+
 
     captureFlash.classList.add(
         "active"
     );
 
+
     pokeball.classList.remove(
         "throw"
     );
 
+
     void pokeball.offsetWidth;
+
 
     pokeball.classList.add(
         "throw"
     );
+
 
     pokemonSprite.classList.add(
         "captured"
@@ -1929,9 +2562,10 @@ function playCaptureAnimation(){
 
 }
 
-/* =====================================================
+
+/* =========================================================
    SUCCESS
-===================================================== */
+========================================================= */
 
 function successfulCapture(
     username
@@ -1942,13 +2576,16 @@ function successfulCapture(
             currentPokemon.name
         );
 
+
     addCapture(
         username
     );
 
+
     showMessage(
         `${username} CAUGHT ${name}!`
     );
+
 
     setTimeout(
         ()=>{
@@ -1957,9 +2594,11 @@ function successfulCapture(
                 "throw"
             );
 
+
             pokemonSprite.classList.remove(
                 "captured"
             );
+
 
             newPokemon();
 
@@ -1969,9 +2608,10 @@ function successfulCapture(
 
 }
 
-/* =====================================================
-   FAIL
-===================================================== */
+
+/* =========================================================
+   FAILED CATCH
+========================================================= */
 
 function failedCapture(
     username
@@ -1982,17 +2622,21 @@ function failedCapture(
             currentPokemon.name
         );
 
+
     showMessage(
         `${name} ESCAPED!`
     );
+
 
     pokemonSprite.classList.remove(
         "captured"
     );
 
+
     pokemonSprite.classList.add(
         "escape"
     );
+
 
     setTimeout(
         ()=>{
@@ -2001,9 +2645,11 @@ function failedCapture(
                 "throw"
             );
 
+
             pokemonSprite.classList.remove(
                 "escape"
             );
+
 
             newPokemon();
 
@@ -2013,9 +2659,10 @@ function failedCapture(
 
 }
 
-/* =====================================================
+
+/* =========================================================
    TIMER
-===================================================== */
+========================================================= */
 
 function startTimer(){
 
@@ -2023,10 +2670,13 @@ function startTimer(){
         timerInterval
     );
 
+
     timeLeft =
         ROUND_TIME;
 
+
     updateTimer();
+
 
     timerInterval =
         setInterval(
@@ -2040,7 +2690,10 @@ function startTimer(){
 
                 }
 
-                timeLeft -= .1;
+
+                timeLeft -=
+                    .1;
+
 
                 if(
                     timeLeft <= 0
@@ -2049,13 +2702,17 @@ function startTimer(){
                     timeLeft =
                         0;
 
+
                     updateTimer();
 
+
                     escapePokemon();
+
 
                     return;
 
                 }
+
 
                 updateTimer();
 
@@ -2065,10 +2722,14 @@ function startTimer(){
 
 }
 
+
 function updateTimer(){
 
     timer.textContent =
-        `${timeLeft.toFixed(1)}s`;
+        `${timeLeft.toFixed(
+            1
+        )}s`;
+
 
     if(
         timeLeft <= 5
@@ -2078,7 +2739,8 @@ function updateTimer(){
             "warning"
         );
 
-    }else{
+    }
+    else{
 
         timer.classList.remove(
             "warning"
@@ -2087,6 +2749,7 @@ function updateTimer(){
     }
 
 }
+
 
 function escapePokemon(){
 
@@ -2098,20 +2761,27 @@ function escapePokemon(){
 
     }
 
+
     roundActive =
         false;
+
 
     clearInterval(
         timerInterval
     );
 
+
     pokemonSprite.classList.add(
         "escape"
     );
 
+
     showMessage(
-        `${formatPokemonName(currentPokemon.name)} ESCAPED!`
+        `${formatPokemonName(
+            currentPokemon.name
+        )} ESCAPED!`
     );
+
 
     setTimeout(
         ()=>{
@@ -2119,6 +2789,7 @@ function escapePokemon(){
             pokemonSprite.classList.remove(
                 "escape"
             );
+
 
             newPokemon();
 
@@ -2128,20 +2799,25 @@ function escapePokemon(){
 
 }
 
-/* =====================================================
-   BUTTON
-===================================================== */
 
-function highlight(id){
+/* =========================================================
+   BUTTON HIGHLIGHT
+========================================================= */
+
+function highlight(
+    id
+){
 
     const element =
         document.getElementById(
             id
         );
 
+
     element.classList.add(
         "active"
     );
+
 
     setTimeout(
         ()=>{
@@ -2156,12 +2832,14 @@ function highlight(id){
 
 }
 
-/* =====================================================
+
+/* =========================================================
    TWITCH
-===================================================== */
+========================================================= */
 
 let twitchClient =
     null;
+
 
 function connectTwitch(){
 
@@ -2170,8 +2848,10 @@ function connectTwitch(){
         CHANNEL
     );
 
+
     connectionStatus.textContent =
         "CONECTANDO TWITCH...";
+
 
     twitchClient =
         new tmi.Client({
@@ -2192,45 +2872,62 @@ function connectTwitch(){
 
         });
 
+
     twitchClient.on(
         "connecting",
         ()=>{
+
             connectionStatus.textContent =
                 "CONECTANDO TWITCH...";
+
         }
     );
+
 
     twitchClient.on(
         "connected",
         ()=>{
+
             connectionStatus.textContent =
-                `TWITCH: ${CHANNEL.toUpperCase()}`;
+                `TWITCH: ${
+                    CHANNEL.toUpperCase()
+                }`;
+
 
             connectionStatus.classList.add(
                 "connected"
             );
+
         }
     );
+
 
     twitchClient.on(
         "reconnect",
         ()=>{
+
             connectionStatus.textContent =
                 "RECONECTANDO...";
+
         }
     );
+
 
     twitchClient.on(
         "disconnected",
         ()=>{
+
             connectionStatus.textContent =
                 "TWITCH DESCONECTADO";
+
 
             connectionStatus.classList.remove(
                 "connected"
             );
+
         }
     );
+
 
     twitchClient.on(
         "message",
@@ -2241,9 +2938,14 @@ function connectTwitch(){
             self
         )=>{
 
-            if(self){
+            if(
+                self
+            ){
+
                 return;
+
             }
+
 
             const username =
                 tags["display-name"]
@@ -2252,10 +2954,12 @@ function connectTwitch(){
                 ||
                 "Twitch";
 
+
             addChat(
                 username,
                 msg
             );
+
 
             processCommand(
                 username,
@@ -2265,31 +2969,39 @@ function connectTwitch(){
         }
     );
 
-    twitchClient.connect()
+
+    twitchClient
+        .connect()
         .then(
             ()=>{
+
                 console.log(
                     "Twitch connected"
                 );
+
             }
         )
         .catch(
             error=>{
+
                 console.error(
                     "Twitch error:",
                     error
                 );
 
+
                 connectionStatus.textContent =
                     "ERROR TWITCH";
+
             }
         );
 
 }
 
-/* =====================================================
+
+/* =========================================================
    COMMANDS
-===================================================== */
+========================================================= */
 
 function processCommand(
     username,
@@ -2300,29 +3012,46 @@ function processCommand(
         text
             .trim()
             .toLowerCase()
-            .split(/\s+/)[0];
+            .split(
+                /\s+/
+            )[0];
 
-    switch(command){
+
+    switch(
+        command
+    ){
 
         case "!fight":
+
         case "!f":
 
-            fight(username);
+            fight(
+                username
+            );
 
             break;
+
 
         case "!catch":
+
         case "!c":
 
-            catchPokemon(username);
+            catchPokemon(
+                username
+            );
 
             break;
 
+
         case "!item":
+
         case "!i":
+
         case "!potion":
 
-            useItem(username);
+            useItem(
+                username
+            );
 
             break;
 
@@ -2330,9 +3059,10 @@ function processCommand(
 
 }
 
-/* =====================================================
+
+/* =========================================================
    START
-===================================================== */
+========================================================= */
 
 function start(){
 
@@ -2343,6 +3073,7 @@ function start(){
     newPokemon();
 
 }
+
 
 start();
 
