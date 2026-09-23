@@ -11,10 +11,8 @@
 
 <title>Rubius Poke Catch</title>
 
-<!-- TMI.JS -->
 <script src="https://github.com/tmijs/tmi.js/releases/download/v1.8.5/tmi.min.js"></script>
 
-<!-- PIXEL FONT -->
 <link
     rel="preconnect"
     href="https://fonts.googleapis.com"
@@ -53,12 +51,10 @@ body{
 
 body{
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 
-    font-family:
-        "Press Start 2P",
-        monospace;
+    font-family:"Press Start 2P",monospace;
 }
 
 
@@ -75,7 +71,7 @@ body{
 
     overflow:hidden;
 
-    background:#f5f5f2;
+    background:#f4f4f1;
 
     color:#222;
 
@@ -96,7 +92,7 @@ body{
     left:0;
 
     width:100%;
-    height:82px;
+    height:86px;
 
     background:#ef5350;
 
@@ -107,31 +103,51 @@ body{
     align-items:center;
     justify-content:center;
 
+    overflow:hidden;
+
+    z-index:30;
+
 }
 
 
-/* LOGO */
+/* =========================================================
+   LOGO CONTAINER
+========================================================= */
 
 .logo{
 
+    position:relative;
+
     width:210px;
-    height:70px;
+    height:72px;
 
     display:flex;
 
     align-items:center;
     justify-content:center;
 
+    overflow:hidden;
+
 }
+
+
+/* =========================================================
+   LOGO IMAGE
+========================================================= */
 
 .logo img{
 
-    width:195px;
-    max-height:68px;
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    max-width:100%;
+    max-height:100%;
 
     object-fit:contain;
 
-    image-rendering:auto;
+    object-position:center;
 
 }
 
@@ -144,14 +160,14 @@ body{
 
     position:absolute;
 
-    top:92px;
+    top:96px;
     left:18px;
 
     font-size:8px;
 
-    color:#666;
+    color:#555;
 
-    z-index:20;
+    z-index:25;
 
 }
 
@@ -196,12 +212,11 @@ body{
     left:15px;
     right:15px;
 
-    top:112px;
+    top:116px;
 
     height:360px;
 
-    background-image:
-        url("./background.png");
+    background-image:url("./background.png");
 
     background-size:cover;
 
@@ -213,14 +228,16 @@ body{
 
     overflow:hidden;
 
+    z-index:5;
+
 }
 
 
 /* =========================================================
-   BACKGROUND OVERLAY
+   DARK OVERLAY
 ========================================================= */
 
-.pokemon-card::after{
+.pokemon-card::before{
 
     content:"";
 
@@ -231,13 +248,13 @@ body{
     background:
         linear-gradient(
             to bottom,
-            rgba(0,0,0,0.02),
-            rgba(0,0,0,0.08)
+            rgba(0,0,0,.02),
+            rgba(0,0,0,.12)
         );
 
     pointer-events:none;
 
-    z-index:0;
+    z-index:1;
 
 }
 
@@ -253,15 +270,19 @@ body{
     top:12px;
     right:12px;
 
-    padding:8px 10px;
+    min-width:66px;
+
+    padding:8px 9px;
 
     background:#222;
 
-    color:white;
+    color:#fff;
 
-    font-size:11px;
+    text-align:center;
 
-    z-index:10;
+    font-size:10px;
+
+    z-index:15;
 
 }
 
@@ -300,19 +321,21 @@ body{
 
     top:18px;
 
-    height:235px;
+    height:238px;
 
     display:flex;
 
-    align-items:center;
     justify-content:center;
+    align-items:center;
 
-    z-index:2;
+    z-index:3;
 
 }
 
 
-/* SHADOW */
+/* =========================================================
+   POKEMON SHADOW
+========================================================= */
 
 .pokemon-stage::after{
 
@@ -320,35 +343,45 @@ body{
 
     position:absolute;
 
-    bottom:7px;
+    left:50%;
 
-    width:185px;
-    height:23px;
+    bottom:8px;
 
-    background:
-        rgba(0,0,0,.18);
+    transform:translateX(-50%);
+
+    width:180px;
+    height:22px;
 
     border-radius:50%;
 
-    filter:blur(3px);
+    background:rgba(0,0,0,.18);
+
+    filter:blur(4px);
 
     z-index:0;
 
 }
 
 
-/* SPRITE */
+/* =========================================================
+   POKEMON SPRITE
+========================================================= */
 
 #pokemonSprite{
 
     position:relative;
 
+    display:block;
+
     width:220px;
     height:220px;
 
+    max-width:220px;
+    max-height:220px;
+
     object-fit:contain;
 
-    z-index:2;
+    z-index:3;
 
     transition:
         transform .2s ease,
@@ -357,7 +390,9 @@ body{
 }
 
 
-/* HIT */
+/* =========================================================
+   HIT
+========================================================= */
 
 #pokemonSprite.hit{
 
@@ -391,7 +426,9 @@ body{
 }
 
 
-/* CAPTURED */
+/* =========================================================
+   CAPTURE
+========================================================= */
 
 #pokemonSprite.captured{
 
@@ -403,25 +440,21 @@ body{
 @keyframes captured{
 
     0%{
-
         transform:scale(1);
-
         opacity:1;
-
     }
 
     100%{
-
-        transform:scale(.15);
-
+        transform:scale(.12);
         opacity:0;
-
     }
 
 }
 
 
-/* ESCAPE */
+/* =========================================================
+   ESCAPE
+========================================================= */
 
 #pokemonSprite.escape{
 
@@ -433,21 +466,13 @@ body{
 @keyframes escape{
 
     0%{
-
-        transform:
-            translateY(0);
-
+        transform:translateY(0);
         opacity:1;
-
     }
 
     100%{
-
-        transform:
-            translateY(-100px);
-
+        transform:translateY(-110px);
         opacity:0;
-
     }
 
 }
@@ -470,7 +495,7 @@ body{
 
     font-size:17px;
 
-    color:white;
+    color:#fff;
 
     text-shadow:
         2px 2px 0 #222,
@@ -478,7 +503,7 @@ body{
 
     text-transform:uppercase;
 
-    z-index:5;
+    z-index:10;
 
 }
 
@@ -496,7 +521,7 @@ body{
 
     bottom:17px;
 
-    z-index:5;
+    z-index:10;
 
 }
 
@@ -504,9 +529,9 @@ body{
 
     display:flex;
 
-    justify-content:space-between;
-
     align-items:center;
+
+    justify-content:space-between;
 
     margin-bottom:7px;
 
@@ -516,7 +541,7 @@ body{
 
     font-size:9px;
 
-    color:white;
+    color:#fff;
 
     text-shadow:
         2px 2px 0 #222;
@@ -527,7 +552,7 @@ body{
 
     font-size:8px;
 
-    color:white;
+    color:#fff;
 
     text-shadow:
         2px 2px 0 #222;
@@ -572,32 +597,31 @@ body{
     left:15px;
     right:15px;
 
-    top:485px;
+    top:489px;
 
-    height:94px;
+    height:92px;
 
-    background:white;
+    padding:12px 15px;
+
+    background:#fff;
 
     border:4px solid #222;
 
     border-radius:8px;
 
-    padding:13px 16px;
+    z-index:10;
 
 }
-
-
-/* HEADER */
 
 .capture-top{
 
     display:flex;
 
-    justify-content:space-between;
-
     align-items:center;
 
-    margin-bottom:9px;
+    justify-content:space-between;
+
+    margin-bottom:8px;
 
 }
 
@@ -615,16 +639,13 @@ body{
 
 }
 
-
-/* BAR */
-
 .capture-bar{
 
     width:100%;
 
     height:15px;
 
-    background:#e6e6e6;
+    background:#e5e5e5;
 
     border:3px solid #222;
 
@@ -643,16 +664,13 @@ body{
 
 }
 
-
-/* INFO */
-
 .capture-info{
 
     display:flex;
 
     justify-content:space-between;
 
-    margin-top:8px;
+    margin-top:7px;
 
     font-size:7px;
 
@@ -662,7 +680,7 @@ body{
 
 
 /* =========================================================
-   COMMAND BUTTONS
+   COMMANDS
 ========================================================= */
 
 .commands{
@@ -672,7 +690,7 @@ body{
     left:15px;
     right:15px;
 
-    top:592px;
+    top:593px;
 
     height:57px;
 
@@ -683,8 +701,9 @@ body{
 
     gap:8px;
 
-}
+    z-index:10;
 
+}
 
 .command{
 
@@ -692,13 +711,11 @@ body{
 
     border-radius:7px;
 
-    font-family:
-        "Press Start 2P",
-        monospace;
+    font-family:"Press Start 2P",monospace;
 
     font-size:9px;
 
-    color:white;
+    color:#fff;
 
     cursor:default;
 
@@ -708,26 +725,17 @@ body{
 
 }
 
-
-/* FIGHT */
-
 .command.fight{
 
     background:#ef5350;
 
 }
 
-
-/* CATCH */
-
 .command.catch{
 
     background:#3f8ee8;
 
 }
-
-
-/* ITEM */
 
 .command.item{
 
@@ -737,16 +745,11 @@ body{
 
 }
 
-
-/* ACTIVE */
-
 .command.active{
 
-    transform:
-        translateY(3px);
+    transform:translateY(3px);
 
-    filter:
-        brightness(1.2);
+    filter:brightness(1.2);
 
 }
 
@@ -762,7 +765,7 @@ body{
     left:15px;
     right:15px;
 
-    top:664px;
+    top:665px;
 
     height:120px;
 
@@ -772,6 +775,8 @@ body{
         1fr 1fr;
 
     gap:8px;
+
+    z-index:10;
 
 }
 
@@ -783,7 +788,7 @@ body{
 .chat-panel,
 .ranking-panel{
 
-    background:white;
+    background:#fff;
 
     border:4px solid #222;
 
@@ -797,15 +802,15 @@ body{
 
     height:27px;
 
-    background:#222;
-
-    color:white;
-
     display:flex;
 
     align-items:center;
 
     padding-left:9px;
+
+    background:#222;
+
+    color:#fff;
 
     font-size:7px;
 
@@ -824,6 +829,8 @@ body{
 
 .chat-message{
 
+    margin-bottom:7px;
+
     font-size:6px;
 
     white-space:nowrap;
@@ -831,8 +838,6 @@ body{
     overflow:hidden;
 
     text-overflow:ellipsis;
-
-    margin-bottom:7px;
 
 }
 
@@ -893,7 +898,7 @@ body{
 
 
 /* =========================================================
-   MESSAGE
+   CENTER MESSAGE
 ========================================================= */
 
 .message{
@@ -902,18 +907,18 @@ body{
 
     left:50%;
 
-    top:335px;
-
-    transform:
-        translate(-50%,10px);
+    top:340px;
 
     width:85%;
 
     padding:10px;
 
+    transform:
+        translate(-50%,10px);
+
     background:#222;
 
-    color:white;
+    color:#fff;
 
     border-radius:6px;
 
@@ -954,7 +959,7 @@ body{
     position:absolute;
 
     left:50%;
-    top:275px;
+    top:280px;
 
     width:54px;
     height:54px;
@@ -967,7 +972,7 @@ body{
         linear-gradient(
             #ef5350 0 46%,
             #222 46% 54%,
-            white 54% 100%
+            #fff 54% 100%
         );
 
     transform:
@@ -995,7 +1000,7 @@ body{
 
     border-radius:50%;
 
-    background:white;
+    background:#fff;
 
     border:3px solid #222;
 
@@ -1041,7 +1046,7 @@ body{
 
     inset:0;
 
-    background:white;
+    background:#fff;
 
     opacity:0;
 
@@ -1084,7 +1089,7 @@ body{
     position:absolute;
 
     left:50%;
-    top:275px;
+    top:280px;
 
     transform:
         translate(-50%,-50%)
@@ -1145,6 +1150,7 @@ body{
 
 </head>
 
+
 <body>
 
 
@@ -1152,10 +1158,10 @@ body{
 
 
     <!-- =================================================
-         HEADER
+         HEADER / LOGO
     ================================================== -->
 
-    <div class="header">
+    <header class="header">
 
         <div class="logo">
 
@@ -1166,11 +1172,11 @@ body{
 
         </div>
 
-    </div>
+    </header>
 
 
     <!-- =================================================
-         TWITCH STATUS
+         TWITCH
     ================================================== -->
 
     <div
@@ -1182,16 +1188,14 @@ body{
 
 
     <!-- =================================================
-         POKEMON
+         POKEMON AREA
     ================================================== -->
 
-    <div
+    <section
         id="pokemonCard"
         class="pokemon-card"
     >
 
-
-        <!-- TIMER -->
 
         <div
             id="timer"
@@ -1200,8 +1204,6 @@ body{
             20.0s
         </div>
 
-
-        <!-- POKEMON -->
 
         <div class="pokemon-stage">
 
@@ -1214,8 +1216,6 @@ body{
         </div>
 
 
-        <!-- NAME -->
-
         <div
             id="pokemonName"
             class="pokemon-name"
@@ -1223,8 +1223,6 @@ body{
             CARGANDO...
         </div>
 
-
-        <!-- HP -->
 
         <div class="hp-area">
 
@@ -1255,15 +1253,15 @@ body{
 
         </div>
 
-    </div>
+
+    </section>
 
 
     <!-- =================================================
-         CAPTURE
+         CAPTURE CHANCE
     ================================================== -->
 
-    <div class="capture-panel">
-
+    <section class="capture-panel">
 
         <div class="capture-top">
 
@@ -1316,15 +1314,14 @@ body{
 
         </div>
 
-    </div>
+    </section>
 
 
     <!-- =================================================
          COMMANDS
     ================================================== -->
 
-    <div class="commands">
-
+    <section class="commands">
 
         <button
             id="fightButton"
@@ -1349,18 +1346,15 @@ body{
             ITEM
         </button>
 
-
-    </div>
+    </section>
 
 
     <!-- =================================================
          CHAT + RANKING
     ================================================== -->
 
-    <div class="bottom">
+    <section class="bottom">
 
-
-        <!-- CHAT -->
 
         <div class="chat-panel">
 
@@ -1376,8 +1370,6 @@ body{
         </div>
 
 
-        <!-- RANKING -->
-
         <div class="ranking-panel">
 
             <div class="panel-title">
@@ -1392,7 +1384,7 @@ body{
         </div>
 
 
-    </div>
+    </section>
 
 
     <!-- =================================================
@@ -1406,7 +1398,7 @@ body{
 
 
     <!-- =================================================
-         FLASH
+         CAPTURE FLASH
     ================================================== -->
 
     <div
@@ -1426,7 +1418,7 @@ body{
 
 
     <!-- =================================================
-         ITEM
+         ITEM EFFECT
     ================================================== -->
 
     <div
@@ -1489,42 +1481,32 @@ const POKEAPI =
 let currentPokemon =
     null;
 
-
 let currentHP =
     100;
-
 
 let currentMaxHP =
     100;
 
-
 let timeLeft =
     ROUND_TIME;
-
 
 let timerInterval =
     null;
 
-
 let roundActive =
     false;
-
 
 let itemBonus =
     0;
 
-
 let itemUsed =
     false;
-
 
 let processingCatch =
     false;
 
-
 let captures =
     {};
-
 
 let recentPokemon =
     [];
@@ -1539,102 +1521,80 @@ const connectionStatus =
         "connectionStatus"
     );
 
-
-const pokemonCard =
-    document.getElementById(
-        "pokemonCard"
-    );
-
-
 const pokemonSprite =
     document.getElementById(
         "pokemonSprite"
     );
-
 
 const pokemonName =
     document.getElementById(
         "pokemonName"
     );
 
-
 const hpFill =
     document.getElementById(
         "hpFill"
     );
-
 
 const hpText =
     document.getElementById(
         "hpText"
     );
 
-
 const timer =
     document.getElementById(
         "timer"
     );
-
 
 const capturePercent =
     document.getElementById(
         "capturePercent"
     );
 
-
 const captureFill =
     document.getElementById(
         "captureFill"
     );
-
 
 const baseChance =
     document.getElementById(
         "baseChance"
     );
 
-
 const damageBonus =
     document.getElementById(
         "damageBonus"
     );
-
 
 const itemBonusElement =
     document.getElementById(
         "itemBonus"
     );
 
-
 const chatList =
     document.getElementById(
         "chatList"
     );
-
 
 const rankingList =
     document.getElementById(
         "rankingList"
     );
 
-
 const message =
     document.getElementById(
         "message"
     );
-
 
 const captureFlash =
     document.getElementById(
         "captureFlash"
     );
 
-
 const pokeball =
     document.getElementById(
         "pokeball"
     );
-
 
 const itemEffect =
     document.getElementById(
@@ -1652,14 +1612,11 @@ function randomInt(
 ){
 
     return Math.floor(
-        Math.random()
-        *
+        Math.random() *
         (
             max - min + 1
         )
-    )
-    +
-    min;
+    ) + min;
 
 }
 
@@ -1676,8 +1633,7 @@ function randomPokemonId(){
                 POKEMON_MAX
             );
 
-    }
-    while(
+    }while(
         recentPokemon.includes(id)
         &&
         recentPokemon.length <
@@ -1723,8 +1679,7 @@ function capitalize(
 
 
     return (
-        text.charAt(0)
-        .toUpperCase()
+        text.charAt(0).toUpperCase()
         +
         text.slice(1)
     );
@@ -1738,9 +1693,7 @@ function formatPokemonName(
 
     return name
         .split("-")
-        .map(
-            capitalize
-        )
+        .map(capitalize)
         .join(" ");
 
 }
@@ -1752,7 +1705,6 @@ function formatPokemonName(
 
 let messageTimeout;
 
-
 function showMessage(
     text
 ){
@@ -1760,16 +1712,13 @@ function showMessage(
     message.textContent =
         text;
 
-
     message.classList.add(
         "show"
     );
 
-
     clearTimeout(
         messageTimeout
     );
-
 
     messageTimeout =
         setTimeout(
@@ -1800,7 +1749,6 @@ function addChat(
             "div"
         );
 
-
     row.className =
         "chat-message";
 
@@ -1810,10 +1758,8 @@ function addChat(
             "span"
         );
 
-
     user.className =
         "chat-user";
-
 
     user.textContent =
         username + ":";
@@ -1826,9 +1772,7 @@ function addChat(
 
 
     if(
-        text
-            .trim()
-            .startsWith("!")
+        text.trim().startsWith("!")
     ){
 
         msg.className =
@@ -1844,7 +1788,6 @@ function addChat(
     row.appendChild(
         user
     );
-
 
     row.appendChild(
         msg
@@ -1921,14 +1864,12 @@ function updateRanking(){
     ){
 
         rankingList.innerHTML = `
-            <div
-                style="
-                    padding:8px;
-                    font-size:6px;
-                    line-height:1.8;
-                    color:#777;
-                "
-            >
+            <div style="
+                padding:8px;
+                font-size:6px;
+                line-height:1.8;
+                color:#777;
+            ">
                 NO CAPTURES YET
             </div>
         `;
@@ -2114,7 +2055,6 @@ async function newPokemon(){
 
         updateHP();
 
-
         updateCapture();
 
 
@@ -2164,10 +2104,8 @@ function updateHP(){
     const percentage =
         Math.max(
             0,
-            currentHP
-            /
-            currentMaxHP
-            *
+            currentHP /
+            currentMaxHP *
             100
         );
 
@@ -2230,10 +2168,7 @@ function getCaptureChance(){
 
     const damage =
         (
-            (
-                100 -
-                currentHP
-            )
+            (100 - currentHP)
             /
             100
         )
@@ -2242,10 +2177,8 @@ function getCaptureChance(){
 
 
     const chance =
-        base
-        +
-        damage
-        +
+        base +
+        damage +
         itemBonus;
 
 
@@ -2268,10 +2201,7 @@ function updateCapture(){
 
     const damage =
         (
-            (
-                100 -
-                currentHP
-            )
+            (100 - currentHP)
             /
             100
         )
@@ -2341,8 +2271,7 @@ function fight(
     currentHP =
         Math.max(
             0,
-            currentHP -
-            damage
+            currentHP - damage
         );
 
 
@@ -2373,7 +2302,6 @@ function fight(
 
         currentHP =
             1;
-
 
         updateHP();
 
@@ -2610,7 +2538,7 @@ function successfulCapture(
 
 
 /* =========================================================
-   FAILED CATCH
+   FAIL
 ========================================================= */
 
 function failedCapture(
