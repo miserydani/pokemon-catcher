@@ -2,13 +2,18 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Pokemon Twitch Catcher</title>
+<title>Rubius Poke Catch</title>
 
 <script src="https://github.com/tmijs/tmi.js/releases/download/v1.8.5/tmi.min.js"></script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -21,654 +26,739 @@ body{
     height:100%;
     overflow:hidden;
     background:transparent;
-    font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
+    font-family:"Press Start 2P",monospace;
     display:flex;
     justify-content:center;
     align-items:center;
 }
 
-/* =========================
-   CONTENEDOR PRINCIPAL
-========================= */
+/* =====================================================
+   APP
+===================================================== */
 
 #app{
     position:relative;
+
     width:500px;
     height:800px;
+
     overflow:hidden;
-    border-radius:22px;
-    background:
-        radial-gradient(circle at 50% 25%,#fff 0%,#dff4ff 30%,#8ed0ff 65%,#4b82bd 100%);
-    color:#101828;
+
+    background:#f7f7f5;
+
+    color:#242424;
+
+    border:4px solid #242424;
 }
 
-/* =========================
-   DECORACIÓN
-========================= */
-
-.cloud{
-    position:absolute;
-    background:rgba(255,255,255,.65);
-    border-radius:100px;
-    filter:blur(1px);
-}
-
-.cloud.one{
-    width:180px;
-    height:42px;
-    left:-45px;
-    top:75px;
-}
-
-.cloud.two{
-    width:150px;
-    height:35px;
-    right:-30px;
-    top:145px;
-}
-
-.cloud.three{
-    width:120px;
-    height:30px;
-    left:30px;
-    top:300px;
-    opacity:.5;
-}
-
-/* =========================
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
 .header{
-    position:absolute;
-    left:15px;
-    right:15px;
-    top:14px;
-    height:68px;
+    height:74px;
 
-    border-radius:18px;
+    background:#ef5350;
 
-    background:rgba(255,255,255,.9);
-    border:3px solid rgba(25,45,70,.18);
-
-    box-shadow:
-        0 7px 18px rgba(0,0,0,.15);
+    border-bottom:4px solid #242424;
 
     display:flex;
-    flex-direction:column;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
-    z-index:20;
+    position:relative;
 }
 
-.header-title{
-    font-size:25px;
-    font-weight:1000;
-    letter-spacing:1px;
+.logo{
+    text-align:center;
 }
 
-.header-subtitle{
-    margin-top:3px;
+.logo-main{
+    color:white;
+
+    font-size:22px;
+
+    line-height:1.35;
+
+    text-shadow:
+        3px 3px 0 #242424;
+}
+
+.logo-sub{
+    color:#ffe66d;
+
     font-size:11px;
-    font-weight:800;
-    color:#667085;
+
+    margin-top:5px;
+
+    text-shadow:
+        2px 2px 0 #242424;
 }
 
-/* =========================
-   STATUS
-========================= */
+/* =====================================================
+   TWITCH STATUS
+===================================================== */
 
 .status{
     position:absolute;
-    top:92px;
-    left:20px;
 
-    font-size:11px;
-    font-weight:900;
+    top:87px;
+    left:18px;
 
-    padding:5px 9px;
-    border-radius:20px;
+    font-size:8px;
 
-    background:rgba(255,255,255,.75);
-    border:2px solid rgba(0,0,0,.1);
+    color:#555;
 
     z-index:20;
 }
 
+.status::before{
+    content:"";
+
+    display:inline-block;
+
+    width:7px;
+    height:7px;
+
+    margin-right:6px;
+
+    border-radius:50%;
+
+    background:#aaa;
+}
+
 .status.connected{
-    color:#087443;
+    color:#333;
 }
 
-.status.error{
-    color:#c62828;
+.status.connected::before{
+    background:#42d77d;
 }
 
-/* =========================
-   POKEMON CARD
-========================= */
+/* =====================================================
+   MAIN POKEMON AREA
+===================================================== */
 
 .pokemon-card{
     position:absolute;
 
-    left:20px;
-    right:20px;
-    top:120px;
-    height:330px;
+    left:15px;
+    right:15px;
 
-    border-radius:25px;
+    top:111px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.95),
-            rgba(240,248,255,.86)
-        );
+    height:360px;
 
-    border:4px solid rgba(30,50,75,.16);
+    background:white;
 
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.18);
+    border:4px solid #242424;
 
-    z-index:10;
+    border-radius:8px;
+
+    overflow:hidden;
 }
 
-/* =========================
+/* =====================================================
    TIMER
-========================= */
+===================================================== */
 
 .timer{
     position:absolute;
 
-    top:12px;
-    right:12px;
+    top:13px;
+    right:13px;
 
-    min-width:70px;
+    padding:8px 9px;
 
-    text-align:center;
+    background:#242424;
 
-    padding:6px 10px;
-
-    border-radius:12px;
-
-    background:#172033;
     color:white;
 
-    font-size:15px;
-    font-weight:1000;
+    font-size:11px;
 
-    box-shadow:0 4px 10px rgba(0,0,0,.2);
-
-    z-index:5;
+    z-index:10;
 }
 
 .timer.warning{
-    background:#d92d20;
-    animation:timerPulse .5s infinite alternate;
+    background:#ef5350;
+
+    animation:timerBlink .5s steps(2) infinite;
 }
 
-@keyframes timerPulse{
-    from{transform:scale(1)}
-    to{transform:scale(1.08)}
+@keyframes timerBlink{
+
+    0%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:.55;
+    }
+
 }
 
-/* =========================
-   POKEMON
-========================= */
+/* =====================================================
+   POKEMON STAGE
+===================================================== */
 
 .pokemon-stage{
     position:absolute;
 
-    left:20px;
-    right:20px;
-    top:30px;
-    height:205px;
+    left:0;
+    right:0;
+
+    top:15px;
+
+    height:235px;
 
     display:flex;
-    justify-content:center;
+
     align-items:center;
+    justify-content:center;
 }
 
-.pokemon-shadow{
+.pokemon-stage::after{
+    content:"";
+
     position:absolute;
 
-    bottom:13px;
+    bottom:5px;
 
-    width:185px;
-    height:35px;
+    width:190px;
+    height:24px;
+
+    background:#e5e5e5;
 
     border-radius:50%;
 
-    background:rgba(0,0,0,.18);
-
-    filter:blur(5px);
+    z-index:0;
 }
 
 #pokemonSprite{
     position:relative;
 
-    width:190px;
-    height:190px;
+    width:215px;
+    height:215px;
 
     object-fit:contain;
 
-    image-rendering:auto;
-
-    filter:
-        drop-shadow(0 9px 7px rgba(0,0,0,.2));
+    z-index:1;
 
     transition:
-        transform .25s ease,
-        filter .25s ease;
+        transform .2s ease,
+        opacity .2s ease;
 }
 
 #pokemonSprite.hit{
-    animation:hit .3s;
+    animation:hit .25s steps(4);
 }
 
 @keyframes hit{
-    0%{transform:translateX(0)}
-    25%{transform:translateX(-10px)}
-    50%{transform:translateX(10px)}
-    75%{transform:translateX(-7px)}
-    100%{transform:translateX(0)}
+
+    0%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-10px);
+    }
+
+    50%{
+        transform:translateX(10px);
+    }
+
+    75%{
+        transform:translateX(-7px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+
 }
 
 #pokemonSprite.captured{
-    animation:captured .8s forwards;
+    animation:captured .7s steps(5) forwards;
 }
 
 @keyframes captured{
+
     0%{
         transform:scale(1);
         opacity:1;
     }
-    60%{
-        transform:scale(.7) translateY(20px);
-        opacity:.8;
-    }
+
     100%{
-        transform:scale(.1) translateY(80px);
+        transform:scale(.15);
         opacity:0;
     }
+
 }
 
-/* =========================
-   NAME
-========================= */
+#pokemonSprite.escape{
+    animation:escape .7s steps(5) forwards;
+}
+
+@keyframes escape{
+
+    0%{
+        transform:translateY(0);
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(-100px);
+        opacity:0;
+    }
+
+}
+
+/* =====================================================
+   POKEMON NAME
+===================================================== */
 
 .pokemon-name{
     position:absolute;
 
-    bottom:66px;
-
     left:20px;
     right:20px;
 
+    bottom:73px;
+
     text-align:center;
 
-    font-size:27px;
-    font-weight:1000;
+    font-size:17px;
+
+    color:#242424;
 
     text-transform:uppercase;
-
-    color:#172033;
 }
 
-/* =========================
+/* =====================================================
    HP
-========================= */
+===================================================== */
 
 .hp-area{
     position:absolute;
 
-    left:30px;
-    right:30px;
+    left:25px;
+    right:25px;
 
-    bottom:19px;
+    bottom:18px;
 }
 
-.hp-label{
+.hp-top{
     display:flex;
+
     justify-content:space-between;
 
-    font-size:10px;
-    font-weight:1000;
-
-    margin-bottom:5px;
-}
-
-.hp-bar{
-    width:100%;
-    height:15px;
-
-    background:#d9dee7;
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-    border:2px solid rgba(0,0,0,.1);
-}
-
-.hp-fill{
-    height:100%;
-    width:100%;
-
-    border-radius:20px;
-
-    background:#20b26b;
-
-    transition:
-        width .35s ease,
-        background .35s ease;
-}
-
-/* =========================
-   CAPTURE INFO
-========================= */
-
-.capture-panel{
-    position:absolute;
-
-    left:20px;
-    right:20px;
-    top:465px;
-    height:120px;
-
-    background:rgba(255,255,255,.94);
-
-    border-radius:20px;
-
-    border:3px solid rgba(30,50,75,.14);
-
-    box-shadow:0 7px 20px rgba(0,0,0,.13);
-
-    padding:12px 15px;
-
-    z-index:10;
-}
-
-.capture-header{
-    display:flex;
-    justify-content:space-between;
     align-items:center;
 
     margin-bottom:7px;
 }
 
+.hp-label{
+    font-size:9px;
+}
+
+.hp-text{
+    font-size:8px;
+
+    color:#666;
+}
+
+.hp-bar{
+    width:100%;
+
+    height:17px;
+
+    background:#e2e2e2;
+
+    border:3px solid #242424;
+}
+
+.hp-fill{
+    width:100%;
+    height:100%;
+
+    background:#55cf72;
+
+    transition:
+        width .25s ease,
+        background .25s ease;
+}
+
+/* =====================================================
+   CAPTURE
+===================================================== */
+
+.capture-panel{
+    position:absolute;
+
+    left:15px;
+    right:15px;
+
+    top:484px;
+
+    height:94px;
+
+    background:white;
+
+    border:4px solid #242424;
+
+    border-radius:8px;
+
+    padding:13px 16px;
+}
+
+.capture-top{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:9px;
+}
+
 .capture-title{
-    font-size:13px;
-    font-weight:1000;
+    font-size:9px;
 }
 
 .capture-percent{
-    font-size:22px;
-    font-weight:1000;
+    font-size:15px;
+
+    color:#ef5350;
 }
 
 .capture-bar{
-    height:18px;
+    width:100%;
 
-    background:#e1e6ed;
+    height:15px;
 
-    border-radius:20px;
+    background:#e6e6e6;
 
-    overflow:hidden;
-
-    border:2px solid rgba(0,0,0,.1);
+    border:3px solid #242424;
 }
 
 .capture-fill{
     width:0%;
     height:100%;
 
-    border-radius:20px;
-
-    background:#2d8cff;
+    background:#55cf72;
 
     transition:
-        width .35s ease;
+        width .25s ease;
 }
 
-.capture-details{
+.capture-info{
     display:flex;
+
     justify-content:space-between;
 
-    margin-top:9px;
+    margin-top:8px;
 
-    font-size:10px;
-    font-weight:800;
+    font-size:7px;
 
-    color:#667085;
+    color:#777;
 }
 
-/* =========================
-   COMMANDS
-========================= */
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 .commands{
     position:absolute;
 
-    left:20px;
-    right:20px;
+    left:15px;
+    right:15px;
 
-    top:600px;
-    height:72px;
+    top:591px;
+
+    height:57px;
 
     display:grid;
-    grid-template-columns:repeat(3,1fr);
 
-    gap:9px;
+    grid-template-columns:
+        1fr 1fr 1fr;
 
-    z-index:10;
+    gap:8px;
 }
 
 .command{
-    border:none;
+    border:4px solid #242424;
 
-    border-radius:15px;
+    border-radius:7px;
+
+    font-family:"Press Start 2P",monospace;
+
+    font-size:9px;
 
     color:white;
 
-    font-weight:1000;
-
-    font-size:13px;
-
-    box-shadow:
-        0 5px 10px rgba(0,0,0,.17);
+    cursor:default;
 
     transition:
-        transform .15s,
-        filter .15s;
+        transform .1s,
+        filter .1s;
 }
 
 .command.fight{
-    background:#e5484d;
+    background:#ef5350;
 }
 
 .command.catch{
-    background:#2d8cff;
+    background:#3f8ee8;
 }
 
 .command.item{
-    background:#f79009;
+    background:#f2bd3d;
+    color:#242424;
 }
 
 .command.active{
-    transform:scale(1.07);
-    filter:brightness(1.25);
+    transform:translateY(3px);
 
-    outline:3px solid white;
+    filter:brightness(1.2);
 }
 
-/* =========================
+/* =====================================================
    BOTTOM
-========================= */
+===================================================== */
 
 .bottom{
     position:absolute;
 
-    left:20px;
-    right:20px;
+    left:15px;
+    right:15px;
 
-    top:684px;
-    bottom:15px;
+    top:663px;
+
+    height:120px;
 
     display:grid;
 
-    grid-template-columns:1fr 1.25fr;
+    grid-template-columns:1fr 1fr;
 
-    gap:10px;
-
-    z-index:10;
+    gap:8px;
 }
 
-/* =========================
-   CHAT
-========================= */
+/* =====================================================
+   PANELS
+===================================================== */
 
 .chat-panel,
 .ranking-panel{
-    background:rgba(255,255,255,.94);
+    background:white;
 
-    border-radius:18px;
+    border:4px solid #242424;
 
-    border:3px solid rgba(30,50,75,.12);
-
-    box-shadow:
-        0 6px 18px rgba(0,0,0,.12);
+    border-radius:8px;
 
     overflow:hidden;
 }
 
 .panel-title{
-    height:31px;
+    height:27px;
+
+    background:#242424;
+
+    color:white;
 
     display:flex;
+
     align-items:center;
 
-    padding:0 10px;
+    padding-left:9px;
 
-    font-size:10px;
-    font-weight:1000;
-
-    background:#172033;
-    color:white;
+    font-size:7px;
 }
 
 .chat-list{
-    padding:7px 9px;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:4px;
+    padding:7px 8px;
 }
 
 .chat-message{
-    font-size:9px;
+    font-size:6px;
 
     white-space:nowrap;
 
     overflow:hidden;
+
     text-overflow:ellipsis;
+
+    margin-bottom:7px;
 }
 
 .chat-user{
-    font-weight:1000;
+    color:#ef5350;
 }
 
 .chat-command{
-    font-weight:900;
-    color:#2878d8;
+    color:#333;
 }
 
-/* =========================
+/* =====================================================
    RANKING
-========================= */
+===================================================== */
 
 .ranking-list{
-    padding:6px 8px;
+    padding:5px 8px;
 }
 
 .rank-row{
     display:grid;
 
-    grid-template-columns:23px 1fr 28px;
+    grid-template-columns:20px 1fr 25px;
 
     align-items:center;
 
-    height:24px;
+    height:18px;
 
-    font-size:9px;
-    font-weight:900;
+    font-size:6px;
 
-    border-bottom:1px solid rgba(0,0,0,.07);
+    border-bottom:1px solid #eee;
 }
 
 .rank-number{
-    font-size:11px;
+    color:#ef5350;
 }
 
 .rank-count{
     text-align:right;
 
-    font-size:11px;
+    color:#555;
 }
 
-/* =========================
-   MESSAGES
-========================= */
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 .message{
     position:absolute;
 
     left:50%;
-    top:355px;
 
-    transform:translateX(-50%);
+    top:330px;
 
-    width:88%;
+    transform:
+        translate(-50%,10px);
 
-    padding:11px 15px;
+    width:85%;
 
-    border-radius:14px;
+    padding:10px;
 
-    text-align:center;
-
-    background:rgba(23,32,51,.94);
+    background:#242424;
 
     color:white;
 
-    font-size:12px;
-    font-weight:1000;
+    border-radius:6px;
+
+    text-align:center;
+
+    font-size:8px;
+
+    line-height:1.7;
 
     opacity:0;
 
     pointer-events:none;
 
-    transition:
-        opacity .2s,
-        transform .2s;
-
     z-index:50;
+
+    transition:
+        opacity .15s,
+        transform .15s;
 }
 
 .message.show{
     opacity:1;
 
     transform:
-        translateX(-50%)
-        translateY(-5px);
+        translate(-50%,0);
 }
 
-/* =========================
-   CAPTURE FLASH
-========================= */
+/* =====================================================
+   POKEBALL
+===================================================== */
+
+.pokeball{
+    position:absolute;
+
+    left:50%;
+    top:270px;
+
+    width:54px;
+    height:54px;
+
+    border-radius:50%;
+
+    border:4px solid #242424;
+
+    background:
+        linear-gradient(
+            #ef5350 0 46%,
+            #242424 46% 54%,
+            white 54% 100%
+        );
+
+    transform:
+        translate(-50%,-50%)
+        scale(0);
+
+    z-index:60;
+}
+
+.pokeball::after{
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:15px;
+    height:15px;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:white;
+
+    border:3px solid #242424;
+}
+
+.pokeball.throw{
+    animation:
+        ballThrow .8s steps(5) forwards;
+}
+
+@keyframes ballThrow{
+
+    0%{
+        transform:
+            translate(-50%,80px)
+            scale(.4)
+            rotate(0deg);
+    }
+
+    100%{
+        transform:
+            translate(-50%,-10px)
+            scale(1)
+            rotate(360deg);
+    }
+
+}
+
+/* =====================================================
+   FLASH
+===================================================== */
 
 .capture-flash{
     position:absolute;
@@ -685,135 +775,43 @@ body{
 }
 
 .capture-flash.active{
-    animation:flash .45s;
+    animation:
+        flash .35s steps(3);
 }
 
 @keyframes flash{
-    0%{opacity:0}
-    25%{opacity:.8}
-    100%{opacity:0}
-}
 
-/* =========================
-   BALL
-========================= */
-
-.pokeball{
-    position:absolute;
-
-    left:50%;
-    top:225px;
-
-    width:60px;
-    height:60px;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            #e53935 0 46%,
-            #222 46% 54%,
-            #fff 54% 100%
-        );
-
-    border:5px solid #222;
-
-    transform:
-        translate(-50%,-50%)
-        scale(0);
-
-    z-index:60;
-
-    box-shadow:
-        0 7px 15px rgba(0,0,0,.3);
-}
-
-.pokeball::after{
-    content:"";
-
-    position:absolute;
-
-    width:17px;
-    height:17px;
-
-    left:50%;
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    border-radius:50%;
-
-    background:white;
-
-    border:4px solid #222;
-}
-
-.pokeball.throw{
-    animation:ballThrow .9s ease forwards;
-}
-
-@keyframes ballThrow{
     0%{
-        transform:
-            translate(-50%,100px)
-            scale(.4)
-            rotate(0deg);
-    }
-
-    55%{
-        transform:
-            translate(-50%,-40px)
-            scale(1)
-            rotate(360deg);
-    }
-
-    100%{
-        transform:
-            translate(-50%,-5px)
-            scale(1)
-            rotate(720deg);
-    }
-}
-
-/* =========================
-   ESCAPE
-========================= */
-
-.escape{
-    animation:escape .9s ease forwards !important;
-}
-
-@keyframes escape{
-    0%{
-        transform:scale(1);
-        opacity:1;
-    }
-
-    100%{
-        transform:
-            translateY(-130px)
-            scale(.4);
         opacity:0;
     }
+
+    30%{
+        opacity:.75;
+    }
+
+    100%{
+        opacity:0;
+    }
+
 }
 
-/* =========================
+/* =====================================================
    ITEM EFFECT
-========================= */
+===================================================== */
 
 .item-effect{
     position:absolute;
 
     left:50%;
-    top:270px;
+    top:275px;
 
-    transform:translate(-50%,-50%) scale(0);
+    transform:
+        translate(-50%,-50%)
+        scale(0);
 
-    color:#f79009;
+    color:#f2bd3d;
 
-    font-size:34px;
-
-    font-weight:1000;
+    font-size:12px;
 
     z-index:55;
 
@@ -821,67 +819,38 @@ body{
 }
 
 .item-effect.active{
-    animation:itemPop .8s ease;
+    animation:
+        itemPop .7s steps(4);
 }
 
 @keyframes itemPop{
+
     0%{
-        transform:translate(-50%,-50%) scale(0);
+        transform:
+            translate(-50%,-50%)
+            scale(0);
+
         opacity:0;
     }
 
     35%{
-        transform:translate(-50%,-50%) scale(1.2);
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+
         opacity:1;
     }
 
     100%{
-        transform:translate(-50%,-80%) scale(1);
+        transform:
+            translate(-50%,-90%)
+            scale(1);
+
         opacity:0;
     }
+
 }
 
-/* =========================
-   LEGENDARY
-========================= */
-
-.legendary{
-    border-color:#f5c542;
-
-    box-shadow:
-        0 0 0 3px rgba(245,197,66,.25),
-        0 12px 30px rgba(0,0,0,.18);
-}
-
-.legendary-label{
-    position:absolute;
-
-    left:12px;
-    top:12px;
-
-    padding:4px 7px;
-
-    border-radius:8px;
-
-    background:#f5c542;
-
-    color:#332700;
-
-    font-size:8px;
-    font-weight:1000;
-
-    z-index:5;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:520px){
-    #app{
-        transform-origin:center;
-    }
-}
 </style>
 </head>
 
@@ -889,34 +858,48 @@ body{
 
 <div id="app">
 
-    <div class="cloud one"></div>
-    <div class="cloud two"></div>
-    <div class="cloud three"></div>
+    <!-- HEADER -->
 
     <div class="header">
-        <div class="header-title">POKÉMON CATCHER</div>
-        <div class="header-subtitle">TWITCH CHAT CATCHES THEM ALL</div>
-    </div>
 
-    <div id="connectionStatus" class="status">
-        ● CONECTANDO TWITCH...
-    </div>
+        <div class="logo">
 
-    <div id="pokemonCard" class="pokemon-card">
+            <div class="logo-main">
+                RUBIUS
+            </div>
 
-        <div id="legendaryLabel"
-             class="legendary-label"
-             style="display:none;">
-            ⭐ LEGENDARIO
+            <div class="logo-sub">
+                POKE CATCH
+            </div>
+
         </div>
 
-        <div id="timer" class="timer">
+    </div>
+
+    <!-- TWITCH -->
+
+    <div
+        id="connectionStatus"
+        class="status"
+    >
+        CONECTANDO TWITCH...
+    </div>
+
+    <!-- POKEMON -->
+
+    <div
+        id="pokemonCard"
+        class="pokemon-card"
+    >
+
+        <div
+            id="timer"
+            class="timer"
+        >
             20.0s
         </div>
 
         <div class="pokemon-stage">
-
-            <div class="pokemon-shadow"></div>
 
             <img
                 id="pokemonSprite"
@@ -926,148 +909,196 @@ body{
 
         </div>
 
-        <div id="pokemonName"
-             class="pokemon-name">
+        <div
+            id="pokemonName"
+            class="pokemon-name"
+        >
             CARGANDO...
         </div>
 
         <div class="hp-area">
 
-            <div class="hp-label">
-                <span>HP</span>
-                <span id="hpText">100 / 100</span>
+            <div class="hp-top">
+
+                <span class="hp-label">
+                    HP
+                </span>
+
+                <span
+                    id="hpText"
+                    class="hp-text"
+                >
+                    100 / 100
+                </span>
+
             </div>
 
             <div class="hp-bar">
-                <div id="hpFill"
-                     class="hp-fill">
-                </div>
+
+                <div
+                    id="hpFill"
+                    class="hp-fill"
+                ></div>
+
             </div>
 
         </div>
 
     </div>
 
+    <!-- CAPTURE -->
+
     <div class="capture-panel">
 
-        <div class="capture-header">
+        <div class="capture-top">
 
-            <div class="capture-title">
-                🎯 RANGO DE CAPTURA
-            </div>
+            <span class="capture-title">
+                CAPTURE CHANCE
+            </span>
 
-            <div id="capturePercent"
-                 class="capture-percent">
-                0%
-            </div>
+            <span
+                id="capturePercent"
+                class="capture-percent"
+            >
+                15%
+            </span>
 
         </div>
 
         <div class="capture-bar">
 
-            <div id="captureFill"
-                 class="capture-fill">
-            </div>
+            <div
+                id="captureFill"
+                class="capture-fill"
+            ></div>
 
         </div>
 
-        <div class="capture-details">
+        <div class="capture-info">
 
             <span>
-                Base: <b id="baseChance">15%</b>
+                BASE <b id="baseChance">15%</b>
             </span>
 
             <span>
-                Daño: <b id="damageBonus">+0%</b>
+                DAMAGE <b id="damageBonus">+0%</b>
             </span>
 
             <span>
-                Item: <b id="itemBonus">+0%</b>
+                ITEM <b id="itemBonus">+0%</b>
             </span>
 
         </div>
 
     </div>
+
+    <!-- COMMANDS -->
 
     <div class="commands">
 
         <button
             id="fightButton"
-            class="command fight">
-            ⚔️ FIGHT
+            class="command fight"
+        >
+            FIGHT
         </button>
 
         <button
             id="catchButton"
-            class="command catch">
-            🎯 CATCH
+            class="command catch"
+        >
+            CATCH
         </button>
 
         <button
             id="itemButton"
-            class="command item">
-            🎒 ITEM
+            class="command item"
+        >
+            ITEM
         </button>
 
     </div>
+
+    <!-- BOTTOM -->
 
     <div class="bottom">
 
         <div class="chat-panel">
 
             <div class="panel-title">
-                💬 CHAT
+                RECENT CHAT
             </div>
 
-            <div id="chatList"
-                 class="chat-list">
-            </div>
+            <div
+                id="chatList"
+                class="chat-list"
+            ></div>
 
         </div>
 
         <div class="ranking-panel">
 
             <div class="panel-title">
-                🏆 CAPTURADORES
+                TOP CATCHERS
             </div>
 
-            <div id="rankingList"
-                 class="ranking-list">
-            </div>
+            <div
+                id="rankingList"
+                class="ranking-list"
+            ></div>
 
         </div>
 
     </div>
 
-    <div id="message"
-         class="message">
-    </div>
+    <!-- MESSAGE -->
 
-    <div id="captureFlash"
-         class="capture-flash">
-    </div>
+    <div
+        id="message"
+        class="message"
+    ></div>
 
-    <div id="pokeball"
-         class="pokeball">
-    </div>
+    <!-- FLASH -->
 
-    <div id="itemEffect"
-         class="item-effect">
-        +CAPTURA
+    <div
+        id="captureFlash"
+        class="capture-flash"
+    ></div>
+
+    <!-- BALL -->
+
+    <div
+        id="pokeball"
+        class="pokeball"
+    ></div>
+
+    <!-- ITEM -->
+
+    <div
+        id="itemEffect"
+        class="item-effect"
+    >
+        +CAPTURE
     </div>
 
 </div>
 
 <script>
 
-/* =========================================================
-   CONFIGURACIÓN
-========================================================= */
+/* =====================================================
+   CONFIG
+===================================================== */
 
-const params = new URLSearchParams(window.location.search);
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
 const CHANNEL =
-    (params.get("channel") || "rubius")
+    (
+        params.get("channel")
+        || "rubius"
+    )
     .toLowerCase()
     .trim();
 
@@ -1076,17 +1107,15 @@ const POKEMON_MAX = 1025;
 const ROUND_TIME = 20;
 
 const FIGHT_DAMAGE_MIN = 8;
-const FIGHT_DAMAGE_MAX = 17;
 
-const POKEMON_SPRITE =
-    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+const FIGHT_DAMAGE_MAX = 17;
 
 const POKEAPI =
     "https://pokeapi.co/api/v2/pokemon/";
 
-/* =========================================================
-   ESTADO
-========================================================= */
+/* =====================================================
+   STATE
+===================================================== */
 
 let currentPokemon = null;
 
@@ -1106,81 +1135,115 @@ let itemUsed = false;
 
 let processingCatch = false;
 
-let uniqueUsers = new Set();
-
 let captures = {};
 
 let recentPokemon = [];
 
-/* =========================================================
-   ELEMENTOS
-========================================================= */
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const connectionStatus =
-    document.getElementById("connectionStatus");
+    document.getElementById(
+        "connectionStatus"
+    );
 
 const pokemonCard =
-    document.getElementById("pokemonCard");
+    document.getElementById(
+        "pokemonCard"
+    );
 
 const pokemonSprite =
-    document.getElementById("pokemonSprite");
+    document.getElementById(
+        "pokemonSprite"
+    );
 
 const pokemonName =
-    document.getElementById("pokemonName");
+    document.getElementById(
+        "pokemonName"
+    );
 
 const hpFill =
-    document.getElementById("hpFill");
+    document.getElementById(
+        "hpFill"
+    );
 
 const hpText =
-    document.getElementById("hpText");
+    document.getElementById(
+        "hpText"
+    );
 
 const timer =
-    document.getElementById("timer");
+    document.getElementById(
+        "timer"
+    );
 
 const capturePercent =
-    document.getElementById("capturePercent");
+    document.getElementById(
+        "capturePercent"
+    );
 
 const captureFill =
-    document.getElementById("captureFill");
+    document.getElementById(
+        "captureFill"
+    );
 
 const baseChance =
-    document.getElementById("baseChance");
+    document.getElementById(
+        "baseChance"
+    );
 
 const damageBonus =
-    document.getElementById("damageBonus");
+    document.getElementById(
+        "damageBonus"
+    );
 
 const itemBonusElement =
-    document.getElementById("itemBonus");
+    document.getElementById(
+        "itemBonus"
+    );
 
 const chatList =
-    document.getElementById("chatList");
+    document.getElementById(
+        "chatList"
+    );
 
 const rankingList =
-    document.getElementById("rankingList");
+    document.getElementById(
+        "rankingList"
+    );
 
 const message =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
 const captureFlash =
-    document.getElementById("captureFlash");
+    document.getElementById(
+        "captureFlash"
+    );
 
 const pokeball =
-    document.getElementById("pokeball");
+    document.getElementById(
+        "pokeball"
+    );
 
 const itemEffect =
-    document.getElementById("itemEffect");
+    document.getElementById(
+        "itemEffect"
+    );
 
-const legendaryLabel =
-    document.getElementById("legendaryLabel");
-
-/* =========================================================
-   UTILIDADES
-========================================================= */
+/* =====================================================
+   UTILITIES
+===================================================== */
 
 function randomInt(min,max){
+
     return Math.floor(
-        Math.random() * (max - min + 1)
+        Math.random() *
+        (max - min + 1)
     ) + min;
+
 }
 
 function randomPokemonId(){
@@ -1188,17 +1251,28 @@ function randomPokemonId(){
     let id;
 
     do{
-        id = randomInt(1,POKEMON_MAX);
-    }
-    while(
+
+        id =
+            randomInt(
+                1,
+                POKEMON_MAX
+            );
+
+    }while(
         recentPokemon.includes(id)
-        && recentPokemon.length < POKEMON_MAX
+        &&
+        recentPokemon.length <
+        POKEMON_MAX
     );
 
     recentPokemon.push(id);
 
-    if(recentPokemon.length > 20){
+    if(
+        recentPokemon.length > 20
+    ){
+
         recentPokemon.shift();
+
     }
 
     return id;
@@ -1206,12 +1280,16 @@ function randomPokemonId(){
 
 function capitalize(text){
 
-    if(!text) return "";
+    if(!text){
+        return "";
+    }
 
     return text
         .charAt(0)
         .toUpperCase()
-        + text.slice(1);
+        +
+        text.slice(1);
+
 }
 
 function formatPokemonName(name){
@@ -1220,42 +1298,61 @@ function formatPokemonName(name){
         .split("-")
         .map(capitalize)
         .join(" ");
+
 }
 
-/* =========================================================
-   MENSAJES
-========================================================= */
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 let messageTimeout;
 
 function showMessage(text){
 
-    message.textContent = text;
+    message.textContent =
+        text;
 
-    message.classList.add("show");
+    message.classList.add(
+        "show"
+    );
 
-    clearTimeout(messageTimeout);
+    clearTimeout(
+        messageTimeout
+    );
 
     messageTimeout =
-        setTimeout(()=>{
-            message.classList.remove("show");
-        },2200);
+        setTimeout(
+            ()=>{
+                message.classList.remove(
+                    "show"
+                );
+            },
+            2200
+        );
+
 }
 
-/* =========================================================
-   CHAT VISUAL
-========================================================= */
+/* =====================================================
+   CHAT
+===================================================== */
 
-function addChat(username,text){
+function addChat(
+    username,
+    text
+){
 
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     row.className =
         "chat-message";
 
     const user =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     user.className =
         "chat-user";
@@ -1264,85 +1361,107 @@ function addChat(username,text){
         username + ":";
 
     const msg =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
-    msg.className =
+    if(
         text.trim().startsWith("!")
-        ? "chat-command"
-        : "";
+    ){
+
+        msg.className =
+            "chat-command";
+
+    }
 
     msg.textContent =
         " " + text;
 
     row.appendChild(user);
+
     row.appendChild(msg);
 
     chatList.prepend(row);
 
-    while(chatList.children.length > 7){
+    while(
+        chatList.children.length > 6
+    ){
+
         chatList.removeChild(
             chatList.lastChild
         );
+
     }
+
 }
 
-/* =========================================================
+/* =====================================================
    RANKING
-========================================================= */
+===================================================== */
 
 function addCapture(username){
 
-    if(!captures[username]){
+    if(
+        !captures[username]
+    ){
+
         captures[username] = 0;
+
     }
 
     captures[username]++;
 
     updateRanking();
+
 }
 
 function updateRanking(){
 
     const entries =
-        Object.entries(captures)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,7);
+        Object.entries(
+            captures
+        )
+        .sort(
+            (a,b)=>b[1]-a[1]
+        )
+        .slice(0,6);
 
-    rankingList.innerHTML = "";
+    rankingList.innerHTML =
+        "";
 
-    if(entries.length === 0){
+    if(
+        entries.length === 0
+    ){
 
-        rankingList.innerHTML =
-            `<div style="
-                padding:12px 6px;
-                font-size:9px;
-                font-weight:800;
-                color:#667085;
+        rankingList.innerHTML = `
+            <div style="
+                padding:8px;
+                font-size:6px;
+                line-height:1.8;
+                color:#777;
             ">
-                Todavía nadie ha capturado Pokémon.
-            </div>`;
+                NO CAPTURES YET
+            </div>
+        `;
 
         return;
+
     }
 
     entries.forEach(
         ([username,count],index)=>{
 
             const row =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             row.className =
                 "rank-row";
 
-            const medal =
-                index === 0 ? "🥇"
-                : index === 1 ? "🥈"
-                : index === 2 ? "🥉"
-                : `${index+1}.`;
-
             row.innerHTML = `
                 <span class="rank-number">
-                    ${medal}
+                    ${index + 1}
                 </span>
 
                 <span>
@@ -1354,53 +1473,77 @@ function updateRanking(){
                 </span>
             `;
 
-            rankingList.appendChild(row);
+            rankingList.appendChild(
+                row
+            );
+
         }
     );
+
 }
 
 function escapeHTML(text){
 
     return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
 
-/* =========================================================
-   POKEMON
-========================================================= */
+/* =====================================================
+   NEW POKEMON
+===================================================== */
 
 async function newPokemon(){
 
-    clearInterval(timerInterval);
+    clearInterval(
+        timerInterval
+    );
 
-    roundActive = false;
+    roundActive =
+        false;
 
-    processingCatch = false;
+    processingCatch =
+        false;
 
-    itemBonus = 0;
+    itemBonus =
+        0;
 
-    itemUsed = false;
+    itemUsed =
+        false;
 
-    timeLeft = ROUND_TIME;
+    timeLeft =
+        ROUND_TIME;
 
-    pokemonSprite.className = "";
-
-    pokemonCard.classList.remove("legendary");
-
-    legendaryLabel.style.display =
-        "none";
+    pokemonSprite.className =
+        "";
 
     const id =
         randomPokemonId();
 
     pokemonName.textContent =
-        "CARGANDO...";
+        "LOADING...";
 
-    pokemonSprite.src = "";
+    pokemonSprite.src =
+        "";
 
     try{
 
@@ -1412,151 +1555,46 @@ async function newPokemon(){
         const data =
             await response.json();
 
-        currentPokemon = data;
+        currentPokemon =
+            data;
 
-        currentMaxHP = 100;
+        currentMaxHP =
+            100;
 
-        currentHP = 100;
-
-        const isLegendary =
-            data.id === 144 ||
-            data.id === 145 ||
-            data.id === 146 ||
-            data.id === 150 ||
-            data.id === 151 ||
-            data.id === 243 ||
-            data.id === 244 ||
-            data.id === 245 ||
-            data.id === 249 ||
-            data.id === 250 ||
-            data.id === 251 ||
-            data.id === 377 ||
-            data.id === 378 ||
-            data.id === 379 ||
-            data.id === 380 ||
-            data.id === 381 ||
-            data.id === 382 ||
-            data.id === 383 ||
-            data.id === 384 ||
-            data.id === 385 ||
-            data.id === 386 ||
-            data.id === 480 ||
-            data.id === 481 ||
-            data.id === 482 ||
-            data.id === 483 ||
-            data.id === 484 ||
-            data.id === 485 ||
-            data.id === 486 ||
-            data.id === 487 ||
-            data.id === 488 ||
-            data.id === 491 ||
-            data.id === 492 ||
-            data.id === 493 ||
-            data.id === 494 ||
-            data.id === 638 ||
-            data.id === 639 ||
-            data.id === 640 ||
-            data.id === 641 ||
-            data.id === 642 ||
-            data.id === 643 ||
-            data.id === 644 ||
-            data.id === 645 ||
-            data.id === 646 ||
-            data.id === 647 ||
-            data.id === 648 ||
-            data.id === 649 ||
-            data.id === 716 ||
-            data.id === 717 ||
-            data.id === 718 ||
-            data.id === 772 ||
-            data.id === 773 ||
-            data.id === 785 ||
-            data.id === 786 ||
-            data.id === 787 ||
-            data.id === 788 ||
-            data.id === 789 ||
-            data.id === 790 ||
-            data.id === 791 ||
-            data.id === 792 ||
-            data.id === 800 ||
-            data.id === 801 ||
-            data.id === 802 ||
-            data.id === 807 ||
-            data.id === 808 ||
-            data.id === 809 ||
-            data.id === 888 ||
-            data.id === 889 ||
-            data.id === 890 ||
-            data.id === 891 ||
-            data.id === 892 ||
-            data.id === 894 ||
-            data.id === 895 ||
-            data.id === 896 ||
-            data.id === 897 ||
-            data.id === 898 ||
-            data.id === 905 ||
-            data.id === 1001 ||
-            data.id === 1002 ||
-            data.id === 1003 ||
-            data.id === 1004 ||
-            data.id === 1005 ||
-            data.id === 1006 ||
-            data.id === 1007 ||
-            data.id === 1008 ||
-            data.id === 1009 ||
-            data.id === 1010 ||
-            data.id === 1011 ||
-            data.id === 1012 ||
-            data.id === 1013 ||
-            data.id === 1014 ||
-            data.id === 1015 ||
-            data.id === 1016 ||
-            data.id === 1017 ||
-            data.id === 1018 ||
-            data.id === 1019 ||
-            data.id === 1020 ||
-            data.id === 1021 ||
-            data.id === 1022 ||
-            data.id === 1023 ||
-            data.id === 1024 ||
-            data.id === 1025;
-
-        if(isLegendary){
-
-            pokemonCard.classList.add(
-                "legendary"
-            );
-
-            legendaryLabel.style.display =
-                "block";
-        }
+        currentHP =
+            100;
 
         pokemonName.textContent =
-            formatPokemonName(data.name);
+            formatPokemonName(
+                data.name
+            );
 
         pokemonSprite.src =
-            data.sprites.other?.["official-artwork"]?.front_default
+            data.sprites.other
+                ?.["official-artwork"]
+                ?.front_default
             ||
             data.sprites.front_default
             ||
-            `${POKEMON_SPRITE}${id}.png`;
+            "";
 
         updateHP();
 
         updateCapture();
 
-        roundActive = true;
+        roundActive =
+            true;
 
         startTimer();
 
         showMessage(
-            `¡Apareció ${formatPokemonName(data.name)}!`
+            `WILD ${formatPokemonName(data.name)} APPEARED!`
         );
 
     }catch(error){
 
         console.error(
-            "Error cargando Pokémon:",
+            "Pokemon error:",
             error
         );
 
@@ -1567,66 +1605,72 @@ async function newPokemon(){
             newPokemon,
             2000
         );
+
     }
+
 }
 
-/* =========================================================
+/* =====================================================
    HP
-========================================================= */
+===================================================== */
 
 function updateHP(){
 
     const percentage =
         Math.max(
             0,
-            currentHP / currentMaxHP * 100
+            currentHP /
+            currentMaxHP *
+            100
         );
 
     hpFill.style.width =
         percentage + "%";
 
     hpText.textContent =
-        `${Math.max(0,Math.round(currentHP))} / ${currentMaxHP}`;
+        `${Math.round(currentHP)} / ${currentMaxHP}`;
 
-    if(percentage > 55){
-
-        hpFill.style.background =
-            "#20b26b";
-
-    }else if(percentage > 25){
+    if(
+        percentage > 55
+    ){
 
         hpFill.style.background =
-            "#f5a623";
+            "#55cf72";
+
+    }else if(
+        percentage > 25
+    ){
+
+        hpFill.style.background =
+            "#f2bd3d";
 
     }else{
 
         hpFill.style.background =
-            "#e5484d";
+            "#ef5350";
+
     }
 
     updateCapture();
+
 }
 
-/* =========================================================
-   CAPTURA
-========================================================= */
+/* =====================================================
+   CAPTURE CHANCE
+===================================================== */
 
 function getBaseChance(){
 
-    if(!currentPokemon){
+    if(
+        !currentPokemon
+    ){
+
         return 15;
-    }
 
-    const legendary =
-        pokemonCard.classList.contains(
-            "legendary"
-        );
-
-    if(legendary){
-        return 5;
     }
 
     return 15;
+
 }
 
 function getCaptureChance(){
@@ -1635,15 +1679,24 @@ function getCaptureChance(){
         getBaseChance();
 
     const damage =
-        ((100-currentHP)/100) * 65;
+        (
+            (100 - currentHP)
+            / 100
+        ) * 65;
 
-    let chance =
-        base + damage + itemBonus;
+    const chance =
+        base +
+        damage +
+        itemBonus;
 
     return Math.min(
         95,
-        Math.max(1,chance)
+        Math.max(
+            1,
+            chance
+        )
     );
+
 }
 
 function updateCapture(){
@@ -1652,7 +1705,10 @@ function updateCapture(){
         getBaseChance();
 
     const damage =
-        ((100-currentHP)/100) * 65;
+        (
+            (100 - currentHP)
+            / 100
+        ) * 65;
 
     const chance =
         getCaptureChance();
@@ -1671,16 +1727,21 @@ function updateCapture(){
 
     itemBonusElement.textContent =
         `+${itemBonus}%`;
+
 }
 
-/* =========================================================
+/* =====================================================
    FIGHT
-========================================================= */
+===================================================== */
 
 function fight(username){
 
-    if(!roundActive){
+    if(
+        !roundActive
+    ){
+
         return;
+
     }
 
     highlight(
@@ -1712,43 +1773,53 @@ function fight(username){
     updateHP();
 
     showMessage(
-        `⚔️ ${username} hizo ${damage} de daño`
+        `${username} DEALT ${damage} DAMAGE`
     );
 
-    if(currentHP <= 0){
+    if(
+        currentHP <= 0
+    ){
 
-        currentHP = 1;
+        currentHP =
+            1;
 
         updateHP();
 
-        showMessage(
-            `${username} debilitó demasiado al Pokémon. ¡Intenta atraparlo!`
-        );
     }
+
 }
 
-/* =========================================================
+/* =====================================================
    ITEM
-========================================================= */
+===================================================== */
 
 function useItem(username){
 
-    if(!roundActive){
+    if(
+        !roundActive
+    ){
+
         return;
+
     }
 
-    if(itemUsed){
+    if(
+        itemUsed
+    ){
 
         showMessage(
-            `${username}: ya utilizaste el objeto en esta ronda`
+            "ITEM ALREADY USED"
         );
 
         return;
+
     }
 
-    itemUsed = true;
+    itemUsed =
+        true;
 
-    itemBonus = 20;
+    itemBonus =
+        20;
 
     highlight(
         "itemButton"
@@ -1767,25 +1838,29 @@ function useItem(username){
     updateCapture();
 
     showMessage(
-        `🎒 ${username} utilizó una Super Ball`
+        `${username} USED AN ITEM`
     );
+
 }
 
-/* =========================================================
+/* =====================================================
    CATCH
-========================================================= */
+===================================================== */
 
 function catchPokemon(username){
 
-    if(!roundActive){
+    if(
+        !roundActive
+        ||
+        processingCatch
+    ){
+
         return;
+
     }
 
-    if(processingCatch){
-        return;
-    }
-
-    processingCatch = true;
+    processingCatch =
+        true;
 
     highlight(
         "catchButton"
@@ -1797,7 +1872,8 @@ function catchPokemon(username){
     const roll =
         Math.random() * 100;
 
-    roundActive = false;
+    roundActive =
+        false;
 
     clearInterval(
         timerInterval
@@ -1805,27 +1881,34 @@ function catchPokemon(username){
 
     playCaptureAnimation();
 
-    setTimeout(()=>{
+    setTimeout(
+        ()=>{
 
-        if(roll <= chance){
+            if(
+                roll <= chance
+            ){
 
-            successfulCapture(
-                username
-            );
+                successfulCapture(
+                    username
+                );
 
-        }else{
+            }else{
 
-            failedCapture(
-                username
-            );
-        }
+                failedCapture(
+                    username
+                );
 
-    },1100);
+            }
+
+        },
+        900
+    );
+
 }
 
-/* =========================================================
+/* =====================================================
    CAPTURE ANIMATION
-========================================================= */
+===================================================== */
 
 function playCaptureAnimation(){
 
@@ -1852,45 +1935,56 @@ function playCaptureAnimation(){
     pokemonSprite.classList.add(
         "captured"
     );
+
 }
 
-/* =========================================================
+/* =====================================================
    SUCCESS
-========================================================= */
+===================================================== */
 
-function successfulCapture(username){
+function successfulCapture(
+    username
+){
 
     const name =
         formatPokemonName(
             currentPokemon.name
         );
 
-    addCapture(username);
-
-    showMessage(
-        `🎉 ¡${username} atrapó a ${name}!`
+    addCapture(
+        username
     );
 
-    setTimeout(()=>{
+    showMessage(
+        `${username} CAUGHT ${name}!`
+    );
 
-        pokeball.classList.remove(
-            "throw"
-        );
+    setTimeout(
+        ()=>{
 
-        pokemonSprite.classList.remove(
-            "captured"
-        );
+            pokeball.classList.remove(
+                "throw"
+            );
 
-        newPokemon();
+            pokemonSprite.classList.remove(
+                "captured"
+            );
 
-    },1700);
+            newPokemon();
+
+        },
+        1500
+    );
+
 }
 
-/* =========================================================
+/* =====================================================
    FAIL
-========================================================= */
+===================================================== */
 
-function failedCapture(username){
+function failedCapture(
+    username
+){
 
     const name =
         formatPokemonName(
@@ -1898,7 +1992,7 @@ function failedCapture(username){
         );
 
     showMessage(
-        `💨 ${username} falló. ${name} escapó.`
+        `${name} ESCAPED!`
     );
 
     pokemonSprite.classList.remove(
@@ -1909,24 +2003,28 @@ function failedCapture(username){
         "escape"
     );
 
-    setTimeout(()=>{
+    setTimeout(
+        ()=>{
 
-        pokeball.classList.remove(
-            "throw"
-        );
+            pokeball.classList.remove(
+                "throw"
+            );
 
-        pokemonSprite.classList.remove(
-            "escape"
-        );
+            pokemonSprite.classList.remove(
+                "escape"
+            );
 
-        newPokemon();
+            newPokemon();
 
-    },1700);
+        },
+        1500
+    );
+
 }
 
-/* =========================================================
+/* =====================================================
    TIMER
-========================================================= */
+===================================================== */
 
 function startTimer(){
 
@@ -1940,28 +2038,40 @@ function startTimer(){
     updateTimer();
 
     timerInterval =
-        setInterval(()=>{
+        setInterval(
+            ()=>{
 
-            if(!roundActive){
-                return;
-            }
+                if(
+                    !roundActive
+                ){
 
-            timeLeft -= .1;
+                    return;
 
-            if(timeLeft <= 0){
+                }
 
-                timeLeft = 0;
+                timeLeft -= .1;
+
+                if(
+                    timeLeft <= 0
+                ){
+
+                    timeLeft =
+                        0;
+
+                    updateTimer();
+
+                    escapePokemon();
+
+                    return;
+
+                }
 
                 updateTimer();
 
-                escapePokemon();
+            },
+            100
+        );
 
-                return;
-            }
-
-            updateTimer();
-
-        },100);
 }
 
 function updateTimer(){
@@ -1969,7 +2079,9 @@ function updateTimer(){
     timer.textContent =
         `${timeLeft.toFixed(1)}s`;
 
-    if(timeLeft <= 5){
+    if(
+        timeLeft <= 5
+    ){
 
         timer.classList.add(
             "warning"
@@ -1980,16 +2092,23 @@ function updateTimer(){
         timer.classList.remove(
             "warning"
         );
+
     }
+
 }
 
 function escapePokemon(){
 
-    if(!roundActive){
+    if(
+        !roundActive
+    ){
+
         return;
+
     }
 
-    roundActive = false;
+    roundActive =
+        false;
 
     clearInterval(
         timerInterval
@@ -2000,62 +2119,68 @@ function escapePokemon(){
     );
 
     showMessage(
-        `💨 ¡${formatPokemonName(currentPokemon.name)} escapó!`
+        `${formatPokemonName(currentPokemon.name)} ESCAPED!`
     );
 
-    setTimeout(()=>{
+    setTimeout(
+        ()=>{
 
-        pokemonSprite.classList.remove(
-            "escape"
-        );
+            pokemonSprite.classList.remove(
+                "escape"
+            );
 
-        newPokemon();
+            newPokemon();
 
-    },1500);
+        },
+        1300
+    );
+
 }
 
-/* =========================================================
-   BUTTON HIGHLIGHT
-========================================================= */
+/* =====================================================
+   BUTTON
+===================================================== */
 
 function highlight(id){
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
     element.classList.add(
         "active"
     );
 
-    setTimeout(()=>{
+    setTimeout(
+        ()=>{
 
-        element.classList.remove(
-            "active"
-        );
+            element.classList.remove(
+                "active"
+            );
 
-    },700);
+        },
+        500
+    );
+
 }
 
-/* =========================================================
+/* =====================================================
    TWITCH
-========================================================= */
+===================================================== */
 
-let twitchClient = null;
+let twitchClient =
+    null;
 
 function connectTwitch(){
 
     console.log(
-        "Conectando a Twitch:",
+        "Connecting to Twitch:",
         CHANNEL
     );
 
     connectionStatus.textContent =
-        "● CONECTANDO TWITCH...";
-
-    connectionStatus.classList.remove(
-        "connected",
-        "error"
-    );
+        "CONECTANDO TWITCH...";
 
     twitchClient =
         new tmi.Client({
@@ -2073,35 +2198,22 @@ function connectTwitch(){
             channels:[
                 CHANNEL
             ]
+
         });
 
     twitchClient.on(
         "connecting",
-        (address,port)=>{
-
-            console.log(
-                "Twitch connecting:",
-                address,
-                port
-            );
-
+        ()=>{
             connectionStatus.textContent =
-                "● CONECTANDO TWITCH...";
+                "CONECTANDO TWITCH...";
         }
     );
 
     twitchClient.on(
         "connected",
-        (address,port)=>{
-
-            console.log(
-                "Twitch conectado:",
-                address,
-                port
-            );
-
+        ()=>{
             connectionStatus.textContent =
-                `● TWITCH: ${CHANNEL}`;
+                `TWITCH: ${CHANNEL.toUpperCase()}`;
 
             connectionStatus.classList.add(
                 "connected"
@@ -2112,23 +2224,16 @@ function connectTwitch(){
     twitchClient.on(
         "reconnect",
         ()=>{
-
             connectionStatus.textContent =
-                "● RECONECTANDO...";
+                "RECONECTANDO...";
         }
     );
 
     twitchClient.on(
         "disconnected",
-        (reason)=>{
-
-            console.log(
-                "Twitch desconectado:",
-                reason
-            );
-
+        ()=>{
             connectionStatus.textContent =
-                "● TWITCH DESCONECTADO";
+                "TWITCH DESCONECTADO";
 
             connectionStatus.classList.remove(
                 "connected"
@@ -2137,20 +2242,13 @@ function connectTwitch(){
     );
 
     twitchClient.on(
-        "notice",
-        (channel,msgid,message)=>{
-
-            console.log(
-                "Twitch notice:",
-                msgid,
-                message
-            );
-        }
-    );
-
-    twitchClient.on(
         "message",
-        (channel,tags,msg,self)=>{
+        (
+            channel,
+            tags,
+            msg,
+            self
+        )=>{
 
             if(self){
                 return;
@@ -2163,10 +2261,6 @@ function connectTwitch(){
                 ||
                 "Twitch";
 
-            uniqueUsers.add(
-                username
-            );
-
             addChat(
                 username,
                 msg
@@ -2176,44 +2270,43 @@ function connectTwitch(){
                 username,
                 msg
             );
+
         }
     );
 
     twitchClient.connect()
-        .then(()=>{
+        .then(
+            ()=>{
+                console.log(
+                    "Twitch connected"
+                );
+            }
+        )
+        .catch(
+            error=>{
+                console.error(
+                    "Twitch error:",
+                    error
+                );
 
-            console.log(
-                "TMI connect() completado"
-            );
+                connectionStatus.textContent =
+                    "ERROR TWITCH";
+            }
+        );
 
-        })
-        .catch(error=>{
-
-            console.error(
-                "Error Twitch:",
-                error
-            );
-
-            connectionStatus.textContent =
-                "● ERROR TWITCH";
-
-            connectionStatus.classList.add(
-                "error"
-            );
-        });
 }
 
-/* =========================================================
-   COMANDOS
-========================================================= */
+/* =====================================================
+   COMMANDS
+===================================================== */
 
 function processCommand(
     username,
-    messageText
+    text
 ){
 
     const command =
-        messageText
+        text
             .trim()
             .toLowerCase()
             .split(/\s+/)[0];
@@ -2242,40 +2335,22 @@ function processCommand(
 
             break;
 
-        default:
-
-            break;
     }
+
 }
 
-/* =========================================================
-   INICIO
-========================================================= */
+/* =====================================================
+   START
+===================================================== */
 
 function start(){
-
-    console.log(
-        "================================"
-    );
-
-    console.log(
-        "POKEMON TWITCH CATCHER"
-    );
-
-    console.log(
-        "Channel:",
-        CHANNEL
-    );
-
-    console.log(
-        "================================"
-    );
 
     updateRanking();
 
     connectTwitch();
 
     newPokemon();
+
 }
 
 start();
