@@ -111,15 +111,15 @@ body{
 
 
 /* =========================================================
-   LOGO CONTAINER
+   LOGO
 ========================================================= */
 
 .logo{
 
     position:relative;
 
-    width:210px;
-    height:72px;
+    width:250px;
+    height:78px;
 
     display:flex;
 
@@ -139,11 +139,11 @@ body{
 
     display:block;
 
-    width:100%;
-    height:100%;
+    width:240px;
+    height:74px;
 
-    max-width:100%;
-    max-height:100%;
+    max-width:240px;
+    max-height:74px;
 
     object-fit:contain;
 
@@ -234,7 +234,7 @@ body{
 
 
 /* =========================================================
-   DARK OVERLAY
+   BACKGROUND OVERLAY
 ========================================================= */
 
 .pokemon-card::before{
@@ -898,7 +898,7 @@ body{
 
 
 /* =========================================================
-   CENTER MESSAGE
+   MESSAGE
 ========================================================= */
 
 .message{
@@ -1153,13 +1153,10 @@ body{
 
 <body>
 
-
 <div id="app">
 
 
-    <!-- =================================================
-         HEADER / LOGO
-    ================================================== -->
+    <!-- HEADER -->
 
     <header class="header">
 
@@ -1175,9 +1172,7 @@ body{
     </header>
 
 
-    <!-- =================================================
-         TWITCH
-    ================================================== -->
+    <!-- TWITCH STATUS -->
 
     <div
         id="connectionStatus"
@@ -1187,15 +1182,12 @@ body{
     </div>
 
 
-    <!-- =================================================
-         POKEMON AREA
-    ================================================== -->
+    <!-- POKEMON -->
 
     <section
         id="pokemonCard"
         class="pokemon-card"
     >
-
 
         <div
             id="timer"
@@ -1253,13 +1245,10 @@ body{
 
         </div>
 
-
     </section>
 
 
-    <!-- =================================================
-         CAPTURE CHANCE
-    ================================================== -->
+    <!-- CAPTURE -->
 
     <section class="capture-panel">
 
@@ -1317,9 +1306,7 @@ body{
     </section>
 
 
-    <!-- =================================================
-         COMMANDS
-    ================================================== -->
+    <!-- COMMANDS -->
 
     <section class="commands">
 
@@ -1330,14 +1317,12 @@ body{
             FIGHT
         </button>
 
-
         <button
             id="catchButton"
             class="command catch"
         >
             CATCH
         </button>
-
 
         <button
             id="itemButton"
@@ -1349,12 +1334,9 @@ body{
     </section>
 
 
-    <!-- =================================================
-         CHAT + RANKING
-    ================================================== -->
+    <!-- CHAT + RANKING -->
 
     <section class="bottom">
-
 
         <div class="chat-panel">
 
@@ -1383,13 +1365,10 @@ body{
 
         </div>
 
-
     </section>
 
 
-    <!-- =================================================
-         MESSAGE
-    ================================================== -->
+    <!-- MESSAGE -->
 
     <div
         id="message"
@@ -1397,9 +1376,7 @@ body{
     ></div>
 
 
-    <!-- =================================================
-         CAPTURE FLASH
-    ================================================== -->
+    <!-- FLASH -->
 
     <div
         id="captureFlash"
@@ -1407,9 +1384,7 @@ body{
     ></div>
 
 
-    <!-- =================================================
-         POKEBALL
-    ================================================== -->
+    <!-- POKEBALL -->
 
     <div
         id="pokeball"
@@ -1417,9 +1392,7 @@ body{
     ></div>
 
 
-    <!-- =================================================
-         ITEM EFFECT
-    ================================================== -->
+    <!-- ITEM -->
 
     <div
         id="itemEffect"
@@ -1435,14 +1408,13 @@ body{
 <script>
 
 /* =========================================================
-   CONFIGURATION
+   CONFIG
 ========================================================= */
 
 const params =
     new URLSearchParams(
         window.location.search
     );
-
 
 const CHANNEL =
     (
@@ -1453,29 +1425,24 @@ const CHANNEL =
     .toLowerCase()
     .trim();
 
-
 const POKEMON_MAX =
     1025;
-
 
 const ROUND_TIME =
     20;
 
-
 const FIGHT_DAMAGE_MIN =
     8;
 
-
 const FIGHT_DAMAGE_MAX =
     17;
-
 
 const POKEAPI =
     "https://pokeapi.co/api/v2/pokemon/";
 
 
 /* =========================================================
-   GAME STATE
+   STATE
 ========================================================= */
 
 let currentPokemon =
@@ -1640,11 +1607,9 @@ function randomPokemonId(){
         POKEMON_MAX
     );
 
-
     recentPokemon.push(
         id
     );
-
 
     if(
         recentPokemon.length >
@@ -1654,7 +1619,6 @@ function randomPokemonId(){
         recentPokemon.shift();
 
     }
-
 
     return id;
 
@@ -1676,7 +1640,6 @@ function capitalize(
         return "";
 
     }
-
 
     return (
         text.charAt(0).toUpperCase()
@@ -1752,7 +1715,6 @@ function addChat(
     row.className =
         "chat-message";
 
-
     const user =
         document.createElement(
             "span"
@@ -1764,12 +1726,10 @@ function addChat(
     user.textContent =
         username + ":";
 
-
     const msg =
         document.createElement(
             "span"
         );
-
 
     if(
         text.trim().startsWith("!")
@@ -1780,10 +1740,8 @@ function addChat(
 
     }
 
-
     msg.textContent =
         " " + text;
-
 
     row.appendChild(
         user
@@ -1793,11 +1751,9 @@ function addChat(
         msg
     );
 
-
     chatList.prepend(
         row
     );
-
 
     while(
         chatList.children.length >
@@ -1830,9 +1786,7 @@ function addCapture(
 
     }
 
-
     captures[username]++;
-
 
     updateRanking();
 
@@ -1854,10 +1808,8 @@ function updateRanking(){
             6
         );
 
-
     rankingList.innerHTML =
         "";
-
 
     if(
         entries.length === 0
@@ -1878,7 +1830,6 @@ function updateRanking(){
 
     }
 
-
     entries.forEach(
         (
             [username,count],
@@ -1890,33 +1841,24 @@ function updateRanking(){
                     "div"
                 );
 
-
             row.className =
                 "rank-row";
 
-
             row.innerHTML = `
 
-                <span
-                    class="rank-number"
-                >
+                <span class="rank-number">
                     ${index + 1}
                 </span>
 
                 <span>
-                    ${escapeHTML(
-                        username
-                    )}
+                    ${escapeHTML(username)}
                 </span>
 
-                <span
-                    class="rank-count"
-                >
+                <span class="rank-count">
                     ${count}
                 </span>
 
             `;
-
 
             rankingList.appendChild(
                 row
@@ -1972,42 +1914,32 @@ async function newPokemon(){
         timerInterval
     );
 
-
     roundActive =
         false;
-
 
     processingCatch =
         false;
 
-
     itemBonus =
         0;
-
 
     itemUsed =
         false;
 
-
     timeLeft =
         ROUND_TIME;
-
 
     pokemonSprite.className =
         "";
 
-
     const id =
         randomPokemonId();
-
 
     pokemonName.textContent =
         "CARGANDO...";
 
-
     pokemonSprite.src =
         "";
-
 
     try{
 
@@ -2016,28 +1948,22 @@ async function newPokemon(){
                 POKEAPI + id
             );
 
-
         const data =
             await response.json();
-
 
         currentPokemon =
             data;
 
-
         currentMaxHP =
             100;
 
-
         currentHP =
             100;
-
 
         pokemonName.textContent =
             formatPokemonName(
                 data.name
             );
-
 
         pokemonSprite.src =
             data
@@ -2052,25 +1978,20 @@ async function newPokemon(){
             ||
             "";
 
-
         updateHP();
 
         updateCapture();
 
-
         roundActive =
             true;
 
-
         startTimer();
-
 
         showMessage(
             `WILD ${formatPokemonName(
                 data.name
             )} APPEARED!`
         );
-
 
     }
     catch(error){
@@ -2080,10 +2001,8 @@ async function newPokemon(){
             error
         );
 
-
         pokemonName.textContent =
             "ERROR";
-
 
         setTimeout(
             newPokemon,
@@ -2109,16 +2028,13 @@ function updateHP(){
             100
         );
 
-
     hpFill.style.width =
         percentage + "%";
-
 
     hpText.textContent =
         `${Math.round(
             currentHP
         )} / ${currentMaxHP}`;
-
 
     if(
         percentage > 55
@@ -2143,7 +2059,6 @@ function updateHP(){
 
     }
 
-
     updateCapture();
 
 }
@@ -2165,7 +2080,6 @@ function getCaptureChance(){
     const base =
         getBaseChance();
 
-
     const damage =
         (
             (100 - currentHP)
@@ -2175,12 +2089,10 @@ function getCaptureChance(){
         *
         65;
 
-
     const chance =
         base +
         damage +
         itemBonus;
-
 
     return Math.min(
         95,
@@ -2198,7 +2110,6 @@ function updateCapture(){
     const base =
         getBaseChance();
 
-
     const damage =
         (
             (100 - currentHP)
@@ -2208,30 +2119,24 @@ function updateCapture(){
         *
         65;
 
-
     const chance =
         getCaptureChance();
-
 
     capturePercent.textContent =
         `${Math.round(
             chance
         )}%`;
 
-
     captureFill.style.width =
         chance + "%";
 
-
     baseChance.textContent =
         `${base}%`;
-
 
     damageBonus.textContent =
         `+${Math.round(
             damage
         )}%`;
-
 
     itemBonusElement.textContent =
         `+${itemBonus}%`;
@@ -2255,11 +2160,9 @@ function fight(
 
     }
 
-
     highlight(
         "fightButton"
     );
-
 
     const damage =
         randomInt(
@@ -2267,34 +2170,27 @@ function fight(
             FIGHT_DAMAGE_MAX
         );
 
-
     currentHP =
         Math.max(
             0,
             currentHP - damage
         );
 
-
     pokemonSprite.classList.remove(
         "hit"
     );
 
-
     void pokemonSprite.offsetWidth;
-
 
     pokemonSprite.classList.add(
         "hit"
     );
 
-
     updateHP();
-
 
     showMessage(
         `${username} DEALT ${damage} DAMAGE`
     );
-
 
     if(
         currentHP <= 0
@@ -2326,7 +2222,6 @@ function useItem(
 
     }
 
-
     if(
         itemUsed
     ){
@@ -2339,35 +2234,27 @@ function useItem(
 
     }
 
-
     itemUsed =
         true;
 
-
     itemBonus =
         20;
-
 
     highlight(
         "itemButton"
     );
 
-
     itemEffect.classList.remove(
         "active"
     );
 
-
     void itemEffect.offsetWidth;
-
 
     itemEffect.classList.add(
         "active"
     );
 
-
     updateCapture();
-
 
     showMessage(
         `${username} USED AN ITEM`
@@ -2394,36 +2281,28 @@ function catchPokemon(
 
     }
 
-
     processingCatch =
         true;
-
 
     highlight(
         "catchButton"
     );
 
-
     const chance =
         getCaptureChance();
-
 
     const roll =
         Math.random() *
         100;
 
-
     roundActive =
         false;
-
 
     clearInterval(
         timerInterval
     );
 
-
     playCaptureAnimation();
-
 
     setTimeout(
         ()=>{
@@ -2462,27 +2341,21 @@ function playCaptureAnimation(){
         "active"
     );
 
-
     void captureFlash.offsetWidth;
-
 
     captureFlash.classList.add(
         "active"
     );
 
-
     pokeball.classList.remove(
         "throw"
     );
 
-
     void pokeball.offsetWidth;
-
 
     pokeball.classList.add(
         "throw"
     );
-
 
     pokemonSprite.classList.add(
         "captured"
@@ -2504,16 +2377,13 @@ function successfulCapture(
             currentPokemon.name
         );
 
-
     addCapture(
         username
     );
 
-
     showMessage(
         `${username} CAUGHT ${name}!`
     );
-
 
     setTimeout(
         ()=>{
@@ -2522,11 +2392,9 @@ function successfulCapture(
                 "throw"
             );
 
-
             pokemonSprite.classList.remove(
                 "captured"
             );
-
 
             newPokemon();
 
@@ -2550,21 +2418,17 @@ function failedCapture(
             currentPokemon.name
         );
 
-
     showMessage(
         `${name} ESCAPED!`
     );
-
 
     pokemonSprite.classList.remove(
         "captured"
     );
 
-
     pokemonSprite.classList.add(
         "escape"
     );
-
 
     setTimeout(
         ()=>{
@@ -2573,11 +2437,9 @@ function failedCapture(
                 "throw"
             );
 
-
             pokemonSprite.classList.remove(
                 "escape"
             );
-
 
             newPokemon();
 
@@ -2598,13 +2460,10 @@ function startTimer(){
         timerInterval
     );
 
-
     timeLeft =
         ROUND_TIME;
 
-
     updateTimer();
-
 
     timerInterval =
         setInterval(
@@ -2618,10 +2477,8 @@ function startTimer(){
 
                 }
 
-
                 timeLeft -=
                     .1;
-
 
                 if(
                     timeLeft <= 0
@@ -2630,17 +2487,13 @@ function startTimer(){
                     timeLeft =
                         0;
 
-
                     updateTimer();
 
-
                     escapePokemon();
-
 
                     return;
 
                 }
-
 
                 updateTimer();
 
@@ -2657,7 +2510,6 @@ function updateTimer(){
         `${timeLeft.toFixed(
             1
         )}s`;
-
 
     if(
         timeLeft <= 5
@@ -2689,20 +2541,16 @@ function escapePokemon(){
 
     }
 
-
     roundActive =
         false;
-
 
     clearInterval(
         timerInterval
     );
 
-
     pokemonSprite.classList.add(
         "escape"
     );
-
 
     showMessage(
         `${formatPokemonName(
@@ -2710,14 +2558,12 @@ function escapePokemon(){
         )} ESCAPED!`
     );
 
-
     setTimeout(
         ()=>{
 
             pokemonSprite.classList.remove(
                 "escape"
             );
-
 
             newPokemon();
 
@@ -2741,11 +2587,9 @@ function highlight(
             id
         );
 
-
     element.classList.add(
         "active"
     );
-
 
     setTimeout(
         ()=>{
@@ -2776,10 +2620,8 @@ function connectTwitch(){
         CHANNEL
     );
 
-
     connectionStatus.textContent =
         "CONECTANDO TWITCH...";
-
 
     twitchClient =
         new tmi.Client({
@@ -2821,7 +2663,6 @@ function connectTwitch(){
                     CHANNEL.toUpperCase()
                 }`;
 
-
             connectionStatus.classList.add(
                 "connected"
             );
@@ -2848,7 +2689,6 @@ function connectTwitch(){
             connectionStatus.textContent =
                 "TWITCH DESCONECTADO";
 
-
             connectionStatus.classList.remove(
                 "connected"
             );
@@ -2874,7 +2714,6 @@ function connectTwitch(){
 
             }
 
-
             const username =
                 tags["display-name"]
                 ||
@@ -2882,12 +2721,10 @@ function connectTwitch(){
                 ||
                 "Twitch";
 
-
             addChat(
                 username,
                 msg
             );
-
 
             processCommand(
                 username,
@@ -2916,7 +2753,6 @@ function connectTwitch(){
                     "Twitch error:",
                     error
                 );
-
 
                 connectionStatus.textContent =
                     "ERROR TWITCH";
@@ -2950,7 +2786,6 @@ function processCommand(
     ){
 
         case "!fight":
-
         case "!f":
 
             fight(
@@ -2961,7 +2796,6 @@ function processCommand(
 
 
         case "!catch":
-
         case "!c":
 
             catchPokemon(
@@ -2972,9 +2806,7 @@ function processCommand(
 
 
         case "!item":
-
         case "!i":
-
         case "!potion":
 
             useItem(
